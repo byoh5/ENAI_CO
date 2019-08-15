@@ -79,6 +79,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="analyzer.h" />
     <ClInclude Include="layer.h" />
     <ClInclude Include="layer_f.h" />
     <ClInclude Include="shell.h" />
@@ -87,6 +88,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="analyzer.cpp" />
     <ClCompile Include="ENAI_CO.cpp" />
     <ClCompile Include="layer.cpp" />
     <ClCompile Include="layer_f.cpp" />

@@ -147,7 +147,7 @@ void softmax_int(int *input_data, int in_length){
 	//for (i = 0; i < in_length; i++){ printf("%d. %f\n", input_data[i]); }
 	printf("Label1 = %d\n", label[0]);
 	printf("Max = %d\n", max[0]);
-	printf("acc = %d\n", sum);
+	//printf("acc = %d\n", sum);
 
 }
 
