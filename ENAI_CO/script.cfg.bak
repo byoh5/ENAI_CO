@@ -1,0 +1,2 @@
+f2i weights_f/fire2_expand1x1_0.npy_float.txt weights_f/fire2_expand1x1_0.npy_INT8.txt
+wa weights_f/fire2_expand1x1_0.npy_INT8.txt
