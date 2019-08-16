@@ -39,8 +39,8 @@ float absolute_max_value(char *FILE_name){
 
 void Convert_INT(char *input_name, char *output_name, float ALL_max, int bits, int TYPE2){
 
-	FILE *fp;
-	FILE *fp1;
+	FILE *fp=NULL;
+	FILE *fp1=NULL;
 
 	fp = fopen(input_name, "r");
 	if (TYPE2 == STRING) fp1 = fopen(output_name, "w");

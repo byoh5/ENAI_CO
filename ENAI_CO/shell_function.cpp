@@ -4,6 +4,7 @@
 #include "squeezeNet.h"
 #include "analyzer.h"
 #include "float2int_conv.h"
+#include "image_cv.h"
 
 #include <fstream>
 #include <iostream>
@@ -17,6 +18,7 @@ using namespace std;
  const char* sWeightAnalyer[] = { "WeightAnalyer", (char*)0 };
  const char* sfloat2int_conv[] = { "float 2 int converter", (char*)0 };
  const char* sScript[] = { "Script", (char*)0 };
+ const char* sImgView[] = { "Image View", (char*)0 };
  tMonCmd gCmdList[] =
  {
 	 { (char*) "?", HelpDisp, sHelpDisp },
@@ -24,6 +26,7 @@ using namespace std;
 	 { (char*) "wa", WeightAnalyzer, sWeightAnalyer },
 	 { (char*) "f2i", Float2int_converter, sfloat2int_conv },
 	 { (char*) "run", RunScript, sScript },
+	 { (char*) "img", Image_view, sImgView },
 	 { 0, 0, 0 }
  };
 
@@ -155,5 +158,11 @@ UINT32 Float2int_converter(int argc, char** argv)
 	float max = 0;
 	max = absolute_max_value(argv[1]);
 	Convert_INT(argv[1], argv[2], max, 8, STRING);
+	return 0;
+}
+
+UINT32 Image_view(int argc, char** argv)
+{
+	ImageViewer(argc, argv);
 	return 0;
 }

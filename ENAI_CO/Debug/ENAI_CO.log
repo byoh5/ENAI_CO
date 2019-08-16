@@ -1,13 +1,17 @@
-﻿빌드 시작: 2019-08-16 오후 2:05:40
+﻿빌드 시작: 2019-08-16 오후 3:58:39
      1>2 노드의 "D:\EYENIX\DEV\DL\src\ENAI_CO\ENAI_CO\ENAI_CO\ENAI_CO.vcxproj" 프로젝트(Build 대상)입니다.
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\ENAI_CO.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt shell_function.cpp
-         shell_function.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ID:\EYENIX\DEV\DL\src\ENAI_CO\ENAI_CO\opencv\build\include /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\ENAI_CO.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt image_cv.cpp
+         image_cv.cpp
+     1>d:\eyenix\dev\dl\src\enai_co\enai_co\opencv\build\include\opencv2\core\mat.hpp(1965): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+     1>d:\eyenix\dev\dl\src\enai_co\enai_co\opencv\build\include\opencv2\core\persistence.hpp : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+     1>d:\eyenix\dev\dl\src\enai_co\enai_co\opencv\build\include\opencv2\core\utility.hpp : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\EYENIX\DEV\DL\src\ENAI_CO\ENAI_CO\Debug\ENAI_CO.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\EYENIX\DEV\DL\src\ENAI_CO\ENAI_CO\Debug\ENAI_CO.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\EYENIX\DEV\DL\src\ENAI_CO\ENAI_CO\Debug\ENAI_CO.lib" /MACHINE:X86 Debug\analyzer.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\EYENIX\DEV\DL\src\ENAI_CO\ENAI_CO\Debug\ENAI_CO.exe" /INCREMENTAL /NOLOGO /LIBPATH:D:\EYENIX\DEV\DL\src\ENAI_CO\ENAI_CO\opencv\build\x86\vc12\lib opencv_ts300d.lib opencv_world300d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\EYENIX\DEV\DL\src\ENAI_CO\ENAI_CO\Debug\ENAI_CO.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\EYENIX\DEV\DL\src\ENAI_CO\ENAI_CO\Debug\ENAI_CO.lib" /MACHINE:X86 Debug\analyzer.obj
          Debug\analyzer_f.obj
          Debug\ENAI_CO.obj
          Debug\float2int_conv.obj
+         Debug\image_cv.obj
          Debug\layer.obj
          Debug\layer_f.obj
          Debug\shell.obj
@@ -19,4 +23,4 @@
 
 빌드했습니다.
 
-경과 시간: 00:00:00.77
+경과 시간: 00:00:01.25
