@@ -66,8 +66,8 @@ void Convert_INT(char *input_name, char *output_name, float ALL_max, int bits, i
 				if (num2 < -(bit_max + 1)) num2 = -(bit_max + 1);
 
 				if (TYPE2 == STRING) {
-					sprintf(s1, "%d", num2);
-					fprintf(fp1, "%s\n", s1);
+				//	sprintf(s1, "%d", num2);
+					fprintf(fp1, "%d\n", num2);
 				}
 				else if (TYPE2 == BINARY) fwrite(&num1, sizeof(char), 1, fp1);
 			}

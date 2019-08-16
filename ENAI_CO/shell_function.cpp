@@ -163,6 +163,6 @@ UINT32 Float2int_converter(int argc, char** argv)
 
 UINT32 Image_view(int argc, char** argv)
 {
-	ImageViewer(argc, argv);
+	dataResize(argc, argv);
 	return 0;
 }

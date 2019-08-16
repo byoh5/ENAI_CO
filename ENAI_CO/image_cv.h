@@ -4,5 +4,5 @@
 #include "stdafx.h"
 
 extern UINT32 ImageViewer(int argc, char** argv);
-
+extern UINT32 dataResize(int argc, char** argv);
 #endif // IMAGE_CV_H
