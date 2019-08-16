@@ -39,6 +39,15 @@
     <ClInclude Include="analyzer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="analyzer_f.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="shell_function.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="float2int_conv.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -60,6 +69,15 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="analyzer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="analyzer_f.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="shell_function.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="float2int_conv.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

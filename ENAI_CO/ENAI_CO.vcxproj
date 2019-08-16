@@ -80,19 +80,25 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="analyzer.h" />
+    <ClInclude Include="analyzer_f.h" />
+    <ClInclude Include="float2int_conv.h" />
     <ClInclude Include="layer.h" />
     <ClInclude Include="layer_f.h" />
     <ClInclude Include="shell.h" />
+    <ClInclude Include="shell_function.h" />
     <ClInclude Include="squeezeNet.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="analyzer.cpp" />
+    <ClCompile Include="analyzer_f.cpp" />
     <ClCompile Include="ENAI_CO.cpp" />
+    <ClCompile Include="float2int_conv.cpp" />
     <ClCompile Include="layer.cpp" />
     <ClCompile Include="layer_f.cpp" />
     <ClCompile Include="shell.cpp" />
+    <ClCompile Include="shell_function.cpp" />
     <ClCompile Include="squeezeNet.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

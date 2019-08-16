@@ -5,11 +5,6 @@
 #include <windows.h>
 
 
-typedef struct {
-	char* name;
-	UINT32(*func)(int, char**);
-	const char** helphelp;
-} tMonCmd;
 
 //-------------------------------------------------------------------------------------------------
 // Constants
@@ -34,5 +29,6 @@ typedef struct {
 #define PROMPT_SIZE			30
 
 extern UINT32 _DoCommand(char* cmdline);
+
 
 #endif

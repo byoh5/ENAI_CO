@@ -1,69 +1,11 @@
 #include "stdafx.h"
 #include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <windows.h>
 
 #include "shell.h"
-#include "squeezeNet.h"
-#include "analyzer.h"
+#include "shell_function.h"
 
 #pragma comment (lib, "Ws2_32.lib")
 #pragma warning(disable:4996)
-
-UINT32 HelpDisp(int argc, char** argv);
-UINT32 Squeeze(int argc, char** argv);
-UINT32 WeightAnalyzer(int argc, char** argv);
-
-const char* sHelpDisp[] = { "Shell command list (! : Repeat command)", (char*)0 };
-const char* sSqueeze[]	= { "Squeeze", (char*)0 };
-const char* sWeightAnalyer[] = { "WeightAnalyer", (char*)0 };
-
-tMonCmd gCmdList[] =
-{
-	{ (char*) "?", HelpDisp, sHelpDisp },
-	{ (char*) "sqz", Squeeze, sSqueeze },
-	{ (char*) "wa", WeightAnalyzer, sWeightAnalyer },
-	{ 0, 0, 0 }
-};
-
-UINT32 HelpDisp(int argc, char** argv)
-{
-	tMonCmd* cmdptr;
-	UINT8 i = 0;
-
-	cmdptr = gCmdList;
-
-	while (1) {
-		printf("[%02d]:[%-8s] - [%-50s]\n", i, cmdptr->name, *cmdptr->helphelp);
-		cmdptr++;
-		i++;
-		if (cmdptr->name == 0)	return 0;
-	}
-}
-
-UINT32 Squeeze(int argc, char** argv)
-{
-	squeezeNet();
-
-	return 0;
-}
-
-UINT32 WeightAnalyzer(int argc, char** argv)
-{
-	printf("argc %d\r\n", argc);
-	int i = 0;
-	for (i = 0; i<argc; i++){
-		printf("%d : %s \r\n", i, argv[i]);
-	}
-	if (argc == 2){
-		weightAnalyzerOfFileFloat(argv[1]);
-	}
-
-	return 0;
-}
-
 
 //-------------------------------------------------------------------------------------------------
 // Take the incoming string and create an argv[] array from that.
