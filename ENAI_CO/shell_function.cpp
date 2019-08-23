@@ -5,6 +5,7 @@
 #include "analyzer.h"
 #include "float2int_conv.h"
 #include "image_cv.h"
+#include "layer.h"
 
 #include <fstream>
 #include <iostream>
@@ -16,17 +17,26 @@ using namespace std;
  const char* sHelpDisp[] = { "Shell command list (! : Repeat command)", (char*)0 };
  const char* sSqueeze[] = { "Squeeze", (char*)0 };
  const char* sWeightAnalyer[] = { "WeightAnalyer", (char*)0 };
- const char* sfloat2int_conv[] = { "float 2 int converter", (char*)0 };
+ const char* sfloat2int_conv[] = { "Quantization", (char*)0 };
  const char* sScript[] = { "Script", (char*)0 };
- const char* sImgView[] = { "Image View", (char*)0 };
+ const char* sImgView[] = { "img ", (char*)0 };
+ const char* sResize[] = { "resize ", (char*)0 };
+ const char* sConvolution[] = { "convolution ", (char*)0 };
+ const char* sRelu[]		= { "relu ", (char*)0 };
+ const char* sMaxpooling[] = { "Maxpooling ", (char*)0 };
+
  tMonCmd gCmdList[] =
  {
 	 { (char*) "?", HelpDisp, sHelpDisp },
 	 { (char*) "sqz", Squeeze, sSqueeze },
 	 { (char*) "wa", WeightAnalyzer, sWeightAnalyer },
-	 { (char*) "f2i", Float2int_converter, sfloat2int_conv },
+	 { (char*) "qunt", Float2int_converter, sfloat2int_conv },
 	 { (char*) "run", RunScript, sScript },
 	 { (char*) "img", Image_view, sImgView },
+	 { (char*) "resize", Image_resize, sResize },
+	 { (char*) "conv", Convolution, sConvolution },
+	 { (char*) "relu", Relu, sRelu },
+	 { (char*) "maxp", MaxPooling, sMaxpooling },
 	 { 0, 0, 0 }
  };
 
@@ -66,7 +76,7 @@ UINT32 RunScript(int argc, char** argv){
 		strcpy(fileName, argv[1]);
 	}
 	else if (argc == 3){
-		printf("Test mode \n", argv[1]);
+		printf("Test mode %s \n", argv[1]);
 		if (strcmp("test", argv[1]) == 0){
 			strcpy(fileName, "script.cfg");
 			test_round = atoi(argv[2]);
@@ -134,6 +144,10 @@ UINT32 RunScript(int argc, char** argv){
 
 UINT32 Squeeze(int argc, char** argv)
 {
+	if (argc != 1){
+		printf("ex) sqz\n");
+		return -1;
+	}
 	squeezeNet();
 
 	return 0;
@@ -141,20 +155,20 @@ UINT32 Squeeze(int argc, char** argv)
 
 UINT32 WeightAnalyzer(int argc, char** argv)
 {
-	printf("argc %d\r\n", argc);
-	int i = 0;
-	for (i = 0; i<argc; i++){
-		printf("%d : %s \r\n", i, argv[i]);
+	if (argc != 2){
+		printf("ex) wa filename\n");
+		return -1;
 	}
-	if (argc == 2){
-		weightAnalyzerOfFile(argv[1]);
-	}
-
+	weightAnalyzerOfFile(argv[1]);
 	return 0;
 }
 
 UINT32 Float2int_converter(int argc, char** argv)
 {
+	if (argc != 3){
+		printf("ex) f2i in-filename out-filename\n");
+		return -1;
+	}
 	float max = 0;
 	max = absolute_max_value(argv[1]);
 	Convert_INT(argv[1], argv[2], max, 8, STRING);
@@ -163,6 +177,84 @@ UINT32 Float2int_converter(int argc, char** argv)
 
 UINT32 Image_view(int argc, char** argv)
 {
+	if (argc != 2){
+		printf("ex) img filename\n");
+		return -1;
+	}
+	ImageViewer(argc, argv);
+	return 0;
+}
+
+UINT32 Image_resize(int argc, char** argv)
+{
+	if (argc != 4){
+		printf("ex)resize filename H-size W-size out-filename\n");
+		return -1;
+	}
 	dataResize(argc, argv);
+	return 0;
+}
+
+
+UINT32 Convolution(int argc, char** argv)
+{
+	if (argc != 14){
+		printf("ex)conv in-filename in-H in-W in-ch kernel-filename k-H k-W k-ch out-filename o-H o-W stride padding \n");
+		//                   1        2    3    4         5          6    7   8       9        10  11   12      13 
+		return -1;
+	}
+	int in_H = atoi(argv[2]);
+	int in_W = atoi(argv[3]);
+	int in_ch = atoi(argv[4]);
+
+	int k_H = atoi(argv[6]);
+	int k_W = atoi(argv[7]);
+	int k_ch = atoi(argv[8]);
+
+	int o_H = atoi(argv[10]);
+	int o_W = atoi(argv[11]);
+
+	int stride = atoi(argv[12]);
+	int padding = atoi(argv[13]);
+
+
+	standard_convolution_int_rapper(argv[1], in_H, in_W, in_ch, argv[5], k_H, k_W, k_ch, argv[9], o_H, o_W,stride,padding);
+	
+	return 0;
+}
+
+UINT32 Relu(int argc, char** argv)
+{
+	if (argc != 6){
+		printf("ex)relu in-filename in-H in-W in-ch out-filename \n");
+		//                   1        2    3    4         5       
+		return -1;
+	}
+	int in_H = atoi(argv[2]);
+	int in_W = atoi(argv[3]);
+	int in_ch = atoi(argv[4]);
+
+	relu_rapper(argv[1], in_H, in_W, in_ch, argv[5]);
+
+	return 0;
+}
+
+UINT32 MaxPooling(int argc, char** argv)
+{
+	if (argc != 9){
+		printf("ex)maxp in-filename in-H in-W in-ch out-filename pooling-H pooling-W stride \n");
+		//                   1        2    3    4         5        6           7        8
+		return -1;
+	}
+	int in_H = atoi(argv[2]);
+	int in_W = atoi(argv[3]);
+	int in_ch = atoi(argv[4]);
+
+	int maxp_H = atoi(argv[6]);
+	int maxp_W = atoi(argv[7]);
+	int stride = atoi(argv[8]);
+
+	max_pooling_rapper(argv[1], in_H, in_W, in_ch, argv[5],maxp_H, maxp_W,stride);
+
 	return 0;
 }

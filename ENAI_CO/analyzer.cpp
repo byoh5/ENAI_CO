@@ -19,8 +19,8 @@ void weightAnalyzerOfFile(char *FILE_name){
 		int min = 0;
 		int zeroCnt = 0;
 
-		int sum_up = 0;
-		int sum_down = 0;
+		long long sum_up = 0;
+		long long sum_down = 0;
 		int sum_up_cnt = 0;
 		int sum_down_cnt = 0;
 
@@ -53,8 +53,8 @@ void weightAnalyzerOfFile(char *FILE_name){
 			}
 			//else break;
 		}
-		avg_up = sum_up / sum_up_cnt;
-		avg_down = sum_down / sum_down_cnt;
+		if (sum_up_cnt !=0)		avg_up = sum_up / sum_up_cnt;
+		if (sum_down_cnt != 0)	avg_down = sum_down / sum_down_cnt;
 
 		int abs_max = (abs(max) > abs(min)) ? abs(max) : abs(min);
 

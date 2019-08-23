@@ -70,17 +70,17 @@ UINT32 dataResize(int argc, char** argv){
 	fp = fopen(argv[4], "w");
 
 	for (int i = 0; i < size_h * size_w; i++){
-		printf("R %d\n", ch_bgr[2].data[i]);
+	//	printf("R %d\n", ch_bgr[2].data[i]);
 		fprintf(fp, "%d\n", ch_bgr[2].data[i]);
 	}
 
 	for (int i = 0; i < size_h * size_w; i++){
-		printf("G %d\n", ch_bgr[1].data[i]);
+	//	printf("G %d\n", ch_bgr[1].data[i]);
 		fprintf(fp, "%d\n", ch_bgr[1].data[i]);
 	}
 
 	for (int i = 0; i < size_h * size_w; i++){
-		printf("B %d\n", ch_bgr[0].data[i]);
+	//	printf("B %d\n", ch_bgr[0].data[i]);
 		fprintf(fp, "%d\n", ch_bgr[0].data[i]);
 	}
 	fclose(fp);

@@ -3,6 +3,10 @@
 #include "shell.h"
 #include <iostream>
 
+#pragma comment (lib, "Ws2_32.lib")
+#pragma warning(disable:4996)
+
+
 void new_conv_int(int *input_data, int input_height, int input_width, int *kernel_data, int kernel_height, int kernel_weight,
 	int *output_data, int output_height, int output_width, int stride, int padding){
 
@@ -151,4 +155,144 @@ void softmax_int(int *input_data, int in_length){
 
 }
 
+void file2data(char *filename,int *input_data ){
+
+	FILE *fp;
+
+	fp = fopen(filename, "r");
+
+	//******************************************************************************
+	//input_data
+	//******************************************************************************
+	if (fp != NULL)
+	{
+		char buffer[100] = { 0, };
+		char *pStr;
+		int num1;
+		int *in_data_buf = input_data;
+		int i = 0;
+
+		while (!feof(fp)){
+			pStr = fgets(buffer, sizeof(buffer), fp);
+			//printf("%s", pStr);
+			if (pStr != NULL){
+				num1 = atoi(pStr);
+				//printf("%d. %f\n", i + 1, num1);
+				input_data[i] = num1;
+				i++;
+			}
+			else break;
+		}
+		fclose(fp);
+	}
+	else{
+		printf("fopen fail\n");
+	}
+
+}
+
+
+void standard_convolution_int_rapper(char *input_file, int input_height, int input_width, int input_ch, char *kernel_file, int kernel_height, int kernel_width, int kernel_ch,
+	char *output_file, int output_height, int output_width, int stride, int padding){
+	
+	int* input_data = (int*)malloc(sizeof(int)*(input_height * input_width * input_ch));
+	file2data(input_file, input_data);
+	
+	int* kernel_data = (int*)malloc(sizeof(int)*(kernel_height * kernel_width * kernel_ch));
+	file2data(kernel_file, kernel_data);
+
+	int* output_data = (int*)malloc(sizeof(int)*(output_height * output_width * kernel_ch));
+	memset(output_data, 0, sizeof(int)*(output_height * output_width * kernel_ch));
+
+#define OUTDATA_CHECKER_CONV
+#ifdef OUTDATA_CHECKER_CONV
+	for (int i = 0; i < output_height*output_width*kernel_ch; i++){
+		if (output_data[i] != 0){
+			printf("Output data init value is not zero!\n");
+		}
+	}
+#endif
+	standard_convolution_int(input_data, input_height, input_width, input_ch, kernel_data, kernel_height, kernel_width, kernel_ch,
+		output_data, output_height, output_width, stride, padding);
+
+	FILE *fp = NULL;
+	fp = fopen(output_file, "w");
+	if (fp != NULL){
+		for (int i = 0; i < output_height * output_width*kernel_ch; i++){
+			//	printf("%d\n", output_data[i]);
+			fprintf(fp, "%d\n", output_data[i]);
+		}
+		fclose(fp);
+	}
+	else{
+		printf("fopen fail!\n");
+	}
+	free(input_data);
+	free(kernel_data);
+	free(output_data);
+
+}
+
+
+void relu_rapper(char* input_file, int input_height, int input_width, int input_ch, char* output_file)
+{
+	
+	int* input_data = (int*)malloc(sizeof(int)*(input_height * input_width * input_ch));
+	file2data(input_file, input_data);
+
+	int* output_data = (int*)malloc(sizeof(int)*(input_height * input_width * input_ch));
+
+	for (int i = 0; i < (input_height * input_width * input_ch); i++){
+		output_data[i] = input_data[i];											// Data copy
+	}
+	ReLU_int(output_data, input_height, input_width, input_ch);					// Relu
+
+#define OUTDATA_CHECKER_RELU
+#ifdef OUTDATA_CHECKER_RELU
+	for (int i = 0; i < (input_height * input_width * input_ch); i++){
+		if (output_data[i] < 0){
+			printf("Relu : Error! This is minus(-) value!\n");
+		}
+	}
+#endif
+	FILE *fp = NULL;
+	fp = fopen(output_file, "w");
+
+	for (int i = 0; i < (input_height * input_width * input_ch); i++){
+		//	printf("%d\n", output_data[i]); 
+		fprintf(fp, "%d\n", output_data[i]);
+	}
+	fclose(fp);
+
+	free(input_data);
+	free(output_data);
+}
+
+void max_pooling_rapper(char* input_file, int input_height, int input_width, int input_ch, char* output_file, int pooling_height, int pooling_width, int stride)
+{
+	int output_height = (input_height - pooling_height) / stride + 1;
+	int output_weight = (input_width - pooling_width) / stride + 1;
+
+	int* input_data = (int*)malloc(sizeof(int)*(input_height * input_width * input_ch));
+	file2data(input_file, input_data);
+
+	int* output_data = (int*)malloc(sizeof(int)*(output_height * output_weight * input_ch));
+	memset(output_data, 0, sizeof(int)*(output_height * output_weight * input_ch));
+
+	new_max_pool_int(input_data, input_height, input_width, input_ch, output_data, pooling_height, pooling_width, stride);
+
+	FILE *fp = NULL;
+	fp = fopen(output_file, "w");
+
+	for (int i = 0; i < output_height * output_weight * input_ch; i++){
+		//	printf("%d\n", output_data[i]);
+		fprintf(fp, "%d\n", output_data[i]);
+	}
+	fclose(fp);
+
+	free(input_data);
+	free(output_data);
+
+
+}
 
