@@ -5,46 +5,65 @@
 #pragma comment (lib, "Ws2_32.lib")
 #pragma warning(disable:4996)
 
-float absolute_max_value(char *FILE_name){
+float absolute_max_value(char* FILE_name) {
 
-	FILE *fp = fopen(FILE_name, "r");
+	FILE* fp=NULL;
+	if ((fp = fopen(FILE_name, "r")) == NULL){
+		printf("fopen fail! \n");
+		return NULL;
+	}
 
-	if (fp != NULL){
+	if (fp != NULL) {
 		char buffer[20] = { 0, };
-		char *pStr;
+		char* pStr;
 		float num1;
 		float max = 0;
 		float min = 0;
-	
-		while (!feof(fp)){
+
+		while (!feof(fp)) {
 			pStr = fgets(buffer, sizeof(buffer), fp);
-			if (pStr != NULL){
+			if (pStr != NULL) {
 				num1 = atof(pStr);
 				if (max < num1) max = num1;
-				if (min > num1) min = num1;	
-			}		
+				if (min > num1) min = num1;
+			}
 		}
 		float abs_max = (fabs(max) > fabs(min)) ? fabs(max) : fabs(min);
 		fclose(fp);
 		return abs_max;
 	}
-	else{
+	else {
 		printf("The file does not exist.\n");
 		return NULL;
 	}
-	
+
 }
 
 
 
-void Convert_INT(char *input_name, char *output_name, float ALL_max, int bits, int TYPE2){
+void Convert_INT(char* input_name, char* output_name, float ALL_max, int bits, int TYPE2) {
 
-	FILE *fp=NULL;
-	FILE *fp1=NULL;
+	FILE* fp = NULL;
+	FILE* fp1 = NULL;
 
-	fp = fopen(input_name, "r");
-	if (TYPE2 == STRING) fp1 = fopen(output_name, "w");
-	else if (TYPE2 == BINARY) fp1 = fopen(output_name, "wb");
+	
+
+	if ((fp = fopen(input_name, "r")) == NULL){
+		printf("fopen fail! \n");
+		return;
+	}
+	if (TYPE2 == STRING) {
+		if ((fp1 = fopen(output_name, "w")) == NULL) {
+			printf("fopen fail! \n");
+			return;
+		}
+	}
+	else if (TYPE2 == BINARY) {
+		if ((fp1 = fopen(output_name, "wb")) == NULL) {
+			printf("fopen fail! \n");
+			return;
+		}
+	}
 
 	if (fp != NULL)
 	{
@@ -69,12 +88,14 @@ void Convert_INT(char *input_name, char *output_name, float ALL_max, int bits, i
 				//	sprintf(s1, "%d", num2);
 					fprintf(fp1, "%d\n", num2);
 				}
-				else if (TYPE2 == BINARY) fwrite(&num1, sizeof(char), 1, fp1);
+				else if (TYPE2 == BINARY) {
+					if(fp1)	fwrite(&num1, sizeof(char), 1, fp1);
+				}
 			}
 			else break;
 		}
 	}
 
-	fclose(fp);
-	fclose(fp1);
+	if(fp)  fclose(fp);
+	if(fp1) fclose(fp1);
 }

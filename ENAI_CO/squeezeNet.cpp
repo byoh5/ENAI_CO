@@ -236,10 +236,11 @@ void init_squeezeNet_buf(void){
 	global_average_pooling_int(SQZ_buf13, 13, 13, 100, result);
 
 	int i;
-	for (i = 0; i < 100; i++){
-		printf("%d. %d\n", i, result[i]);
+	if (result) {
+		for (i = 0; i < 100; i++) {
+			printf("%d. %d\n", i, result[i]);
+		}
 	}
-
 	//******************************************************************************
 	//Softmax
 	//******************************************************************************

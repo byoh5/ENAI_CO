@@ -66,7 +66,7 @@ void weightAnalyzerOfFile(char *FILE_name){
 		printf("Negative AVG	: %d\n", avg_down);
 		printf("Zero			: %d\n", zeroCnt);
 		printf("Total			: %d\n", totalCnt);
-		printf("Zero percent	: %f\n", ((float)zeroCnt / (float)totalCnt) * 100);
+		printf("Zero percent	: %f\n", ((float)zeroCnt / (float)totalCnt) * 100.0);
 		printf("----------------------------\n");
 		
 		fclose(fp);
