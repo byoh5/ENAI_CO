@@ -99,3 +99,10 @@ void Convert_INT(char* input_name, char* output_name, float ALL_max, int bits, i
 	if(fp)  fclose(fp);
 	if(fp1) fclose(fp1);
 }
+
+void quantization_INT8_rapper(char* input_name, char* output_name)
+{
+	float max = 0;
+	max = absolute_max_value(input_name);
+	Convert_INT(input_name, output_name, max, 8, STRING);
+}

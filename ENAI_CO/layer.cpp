@@ -202,6 +202,41 @@ void file2data(char *filename,int *input_data ){
 
 }
 
+void file2data_char(char *filename, char *input_data){
+
+	FILE *fp;
+
+	fp = fopen(filename, "r");
+
+	//******************************************************************************
+	//input_data
+	//******************************************************************************
+	if (fp != NULL)
+	{
+		char buffer[100] = { 0, };
+		char *pStr;
+		int num1;
+		char *in_data_buf = input_data;
+		int i = 0;
+
+		while (!feof(fp)){
+			pStr = fgets(buffer, sizeof(buffer), fp);
+			//printf("%s", pStr);
+			if (pStr != NULL){
+				num1 = atoi(pStr);
+				//printf("%d. %f\n", i + 1, num1);
+				input_data[i] = num1;
+				i++;
+			}
+			else break;
+		}
+		fclose(fp);
+	}
+	else{
+		printf("fopen fail\n");
+	}
+
+}
 
 void standard_convolution_int_rapper(char *input_file, int input_height, int input_width, int input_ch, char *kernel_file, int kernel_height, int kernel_width, int kernel_ch,
 	char *output_file, int output_height, int output_width, int stride, int padding){
@@ -350,3 +385,68 @@ void max_pooling_rapper(char* input_file, int input_height, int input_width, int
 
 }
 
+void concatenate_rapper(char* input_file1, char* input_file2, char* output_file)
+{
+	FILE *fd1, *fd2, *fd3;
+
+	if ((fd1 = fopen(input_file1, "r")) == NULL){
+		printf("fopen fail\n");
+		return;
+	}
+	if ((fd2 = fopen(input_file2, "r")) == NULL){
+		printf("fopen fail\n");
+		return;
+	}
+	if ((fd3 = fopen(output_file, "w")) == NULL){
+		printf("fopen fail\n");
+		return;
+	}
+	int c;
+	while ((c = getc(fd1)) != EOF) putc(c, fd3);
+	while ((c = getc(fd2)) != EOF) putc(c, fd3);
+
+	fclose(fd1);
+	fclose(fd2);
+	fclose(fd3);
+
+}
+
+void global_average_pooling_rapper(char* input_file, int input_height, int input_width, int input_ch, char* output_file)
+{
+	int* input_data = (int*)malloc(sizeof(int)*(input_height * input_width * input_ch));
+	if (input_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data(input_file, input_data);
+
+	int* output_data = (int*)malloc(sizeof(int)*(1 * 1 * input_ch));
+	if (output_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	if (output_data)memset(output_data, 0, sizeof(int)*(1 * 1 * input_ch));
+
+
+	global_average_pooling_int(input_data, input_height, input_width, input_ch, output_data);
+
+
+	FILE *fp = NULL;
+	if ((fp = fopen(output_file, "w")) == NULL) {
+		printf("fopen fail\n");
+		return;
+	}
+
+	int* pdata = output_data;
+
+	for (int i = 0; i < input_ch; i++){
+		//	printf("%d\n", output_data[i]);
+		fprintf(fp, "%d\n", *pdata);
+		pdata++;
+	}
+	fclose(fp);
+
+	if (input_data)	free(input_data);
+	if (output_data)	free(output_data);
+
+}

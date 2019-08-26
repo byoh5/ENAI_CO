@@ -22,8 +22,12 @@ using namespace std;
  const char* sImgView[] = { "img ", (char*)0 };
  const char* sResize[] = { "resize ", (char*)0 };
  const char* sConvolution[] = { "convolution ", (char*)0 };
+ const char* sConcatenate[] = { "concatenate ", (char*)0 };
  const char* sRelu[]		= { "relu ", (char*)0 };
  const char* sMaxpooling[] = { "Maxpooling ", (char*)0 };
+ const char* simgVfd[] = { "Image view from data ", (char*)0 };
+ const char* sFire[] = { "Fire ", (char*)0 };
+ const char* sGrobalAveragePooling[] = { "GrobalAveragePooling ", (char*)0 };
 
  tMonCmd gCmdList[] =
  {
@@ -35,8 +39,12 @@ using namespace std;
 	 { (char*) "img", Image_view, sImgView },
 	 { (char*) "resize", Image_resize, sResize },
 	 { (char*) "conv", Convolution, sConvolution },
+	 { (char*) "conc", Concatenate, sConcatenate },
 	 { (char*) "relu", Relu, sRelu },
 	 { (char*) "maxp", MaxPooling, sMaxpooling },
+	 { (char*) "imfd", Image_viewFromData, simgVfd },
+	 { (char*) "fire", Fire, sFire },
+	 { (char*) "gavp", Grobal_Average_pooling, sGrobalAveragePooling },
 	 { 0, 0, 0 }
  };
 
@@ -169,9 +177,7 @@ UINT32 Float2int_converter(int argc, char** argv)
 		printf("ex) f2i in-filename out-filename\n");
 		return -1;
 	}
-	float max = 0;
-	max = absolute_max_value(argv[1]);
-	Convert_INT(argv[1], argv[2], max, 8, STRING);
+	quantization_INT8_rapper(argv[1], argv[2]);
 	return 0;
 }
 
@@ -184,6 +190,24 @@ UINT32 Image_view(int argc, char** argv)
 	ImageViewer(argc, argv);
 	return 0;
 }
+
+UINT32 Image_viewFromData(int argc, char** argv)
+{
+	if (argc != 6){
+		printf("ex)imfd in-filename in-H in-W in-ch disp-ch");
+		//                    1       2    3    4      5
+		return -1;
+	}
+	int in_H = atoi(argv[2]);
+	int in_W = atoi(argv[3]);
+	int in_ch = atoi(argv[4]);
+	int disp_ch = atoi(argv[5]);
+
+	ImageViewerFromFile(argv[1], in_H, in_W, in_ch,disp_ch);
+	
+	return 0;
+}
+
 
 UINT32 Image_resize(int argc, char** argv)
 {
@@ -223,6 +247,19 @@ UINT32 Convolution(int argc, char** argv)
 	return 0;
 }
 
+UINT32 Concatenate(int argc, char** argv)
+{
+	if (argc != 4){
+		printf("ex)conv in-filename1 in-filename2 out-filename \n");
+		//                   1            2              3   
+		return -1;
+	}
+	concatenate_rapper(argv[1], argv[2], argv[3]);
+
+	return 0;
+}
+
+
 UINT32 Relu(int argc, char** argv)
 {
 	if (argc != 6){
@@ -255,6 +292,88 @@ UINT32 MaxPooling(int argc, char** argv)
 	int stride = atoi(argv[8]);
 
 	max_pooling_rapper(argv[1], in_H, in_W, in_ch, argv[5],maxp_H, maxp_W,stride);
+
+	return 0;
+}
+
+
+UINT32 Fire(int argc, char** argv)
+{
+	if (argc != 15){
+		printf("ex)fire in-filename in-H in-W in-ch k-d1 k-d2 k-d3 k-s1 k-s2 k-s3   firename o-H o-W o-ch \n");
+		//                   1        2    3    4     5    6    7   8     9    10      11     12  13  14   
+   		return -1;
+	}
+	int in_H = atoi(argv[2]);
+	int in_W = atoi(argv[3]);
+	int in_ch = atoi(argv[4]);
+
+	int k_s1 = atoi(argv[8]);
+	int k_s2 = atoi(argv[9]);
+	int k_s3 = atoi(argv[10]);
+
+	int o_H = atoi(argv[12]);
+	int o_W = atoi(argv[13]);
+	int o_ch = atoi(argv[14]);
+	
+	char conv_1[128];
+	char conv_2[128];
+	char conv_3[128];
+	char relu_1[128];
+	char relu_2[128];
+	char relu_3[128];
+	char qunt_1[128];
+	char qunt_2[128];
+	char qunt_3[128];
+	char conc[128];
+
+	sprintf(conv_1, "%s_conv_1_out.txt", argv[11]);
+	sprintf(conv_2, "%s_conv_2_out.txt", argv[11]);
+	sprintf(conv_3, "%s_conv_3_out.txt", argv[11]);
+	sprintf(relu_1, "%s_relu_1_out.txt", argv[11]);
+	sprintf(relu_2, "%s_relu_2_out.txt", argv[11]);
+	sprintf(relu_3, "%s_relu_3_out.txt", argv[11]);
+	sprintf(qunt_1, "%s_qunt_1_out.txt", argv[11]);
+	sprintf(qunt_2, "%s_qunt_2_out.txt", argv[11]);
+	sprintf(qunt_3, "%s_qunt_3_out.txt", argv[11]);
+	sprintf(conc,   "%s_conc_out.txt"  , argv[11]);
+
+	standard_convolution_int_rapper(argv[1], in_H, in_W, in_ch, argv[5], 1, 1, k_s1, conv_1, in_H, in_W, 1, 0);
+
+	relu_rapper(conv_1, in_H, in_W, k_s1, relu_1);
+
+	quantization_INT8_rapper(relu_1, qunt_1);
+
+	standard_convolution_int_rapper(qunt_1, in_H, in_W, k_s1, argv[6], 1, 1, k_s2, conv_2, in_H, in_W, 1, 0);
+
+	relu_rapper(conv_2, in_H, in_W, k_s2, relu_2);
+
+	quantization_INT8_rapper(relu_2, qunt_2);
+
+	standard_convolution_int_rapper(qunt_1, in_H, in_W, k_s1, argv[7], 3, 3, k_s3, conv_3, in_H, in_W, 1, 1);
+
+	relu_rapper(conv_3, in_H, in_W, k_s3, relu_3);
+
+	quantization_INT8_rapper(relu_3, qunt_3);
+
+	concatenate_rapper(qunt_2, qunt_3, conc);
+
+	return 0;
+}
+
+
+UINT32 Grobal_Average_pooling(int argc, char** argv)
+{
+	if (argc != 6){
+		printf("ex)gavp in-filename in-H in-W in-ch out-file\n");
+		//                   1        2    3    4     5      
+		return -1;
+	}
+	int in_H = atoi(argv[2]);
+	int in_W = atoi(argv[3]);
+	int in_ch = atoi(argv[4]);
+
+	global_average_pooling_rapper(argv[1],in_H,in_W,in_ch,argv[5]);
 
 	return 0;
 }

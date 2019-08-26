@@ -15,6 +15,9 @@
 
 #include <iostream>
 #include <string>
+
+#include "layer.h"
+
 using namespace cv;
 using namespace std;
 
@@ -41,6 +44,64 @@ UINT32 ImageViewer(int argc, char** argv){
 	destroyAllWindows();
 	return 0;
 }
+
+
+/*
+void image_scale_INT8(BYTE* indata, BYTE* outdata, int size){
+	if ((indata == NULL) || (outdata == NULL) || (size == 0)){
+		printf("Input is wrong check input. Input(%x) output(%x) size(%d)\n", indata, outdata, size);
+	}
+
+	int max = 0;
+	for (int i = 0; i < size; i++){
+		if (max < *(indata + i)) max = *(indata + i);
+	}
+
+
+
+
+}
+*/
+
+
+
+
+UINT32 ImageViewerFromFile(char *input_file, int input_height, int input_width, int input_ch, int disp_ch){
+
+	BYTE* input_data = (BYTE*)malloc(sizeof(char)*(input_height * input_width * input_ch));
+	if (input_data == NULL) {
+		printf("malloc fail\n");
+		return -1;
+	}
+	BYTE* image_data = (BYTE*)malloc(sizeof(char)*(input_height * input_width));
+	if (image_data == NULL) {
+		printf("malloc fail\n");
+		return -1;
+	}
+
+	if (disp_ch >= input_ch){
+		printf("disp_ch_ch error disp_ch(%d) is over. input_ch(%d)", disp_ch, input_ch);
+	}
+
+	file2data_char(input_file,(char*)input_data);
+	
+	memcpy(image_data, input_data + (input_height*input_width*disp_ch), sizeof(char)*(input_height * input_width));
+
+
+	Mat image(input_height, input_width, CV_8UC1);
+
+	image.data = image_data;
+
+	namedWindow("Display window", WINDOW_AUTOSIZE); // Create a window for display.
+	imshow("Display window", image);                // Show our image inside it.
+	waitKey(0); // Wait for a keystroke in the window
+	destroyAllWindows();
+	
+	if (input_data) free(input_data);
+	if (image_data) free(image_data);
+	return 0;
+}
+
 
 UINT32 dataResize(int argc, char** argv){
 
