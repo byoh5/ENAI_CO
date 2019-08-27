@@ -21,6 +21,7 @@ extern void max_pooling_rapper(char* input_file, int input_height, int input_wid
 extern void file2data(char *filename, int *input_data);
 extern void file2data_char(char *filename, char *input_data);
 extern void concatenate_rapper(char* input_file1, char* input_file2, char* output_file);
+extern void divider_rapper(char* input_file1, char* output_file2, char* output_file);
 extern void global_average_pooling_rapper(char* input_file, int input_height, int input_width, int input_ch, char* output_file);
 
 extern void max_val(char* input_file, int input);

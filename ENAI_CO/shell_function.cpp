@@ -3,6 +3,7 @@
 #include "shell_function.h"
 #include "squeezeNet.h"
 #include "analyzer.h"
+#include "analyzer_f.h"
 #include "float2int_conv.h"
 #include "image_cv.h"
 #include "layer.h"
@@ -17,7 +18,9 @@ using namespace std;
  const char* sHelpDisp[] = { "Shell command list (! : Repeat command)", (char*)0 };
  const char* sSqueeze[] = { "Squeeze", (char*)0 };
  const char* sWeightAnalyer[] = { "WeightAnalyer", (char*)0 };
- const char* sfloat2int_conv[] = { "Quantization", (char*)0 };
+ const char* sQuantization[] = { "Quantization", (char*)0 };
+ const char* sfloat2int_conv[] = { "float 2 int ", (char*)0 };
+ const char* sfloat2int_double[] = { "float 2 int double", (char*)0 };
  const char* sScript[] = { "Script", (char*)0 };
  const char* sImgView[] = { "img ", (char*)0 };
  const char* sResize[] = { "resize ", (char*)0 };
@@ -35,7 +38,9 @@ using namespace std;
 	 { (char*) "?", HelpDisp, sHelpDisp },
 	 { (char*) "sqz", Squeeze, sSqueeze },
 	 { (char*) "wa", WeightAnalyzer, sWeightAnalyer },
-	 { (char*) "qunt", Float2int_converter, sfloat2int_conv },
+	 { (char*) "qunt", Quantization, sQuantization },
+	 { (char*) "f2ic", Float2int_converter, sfloat2int_conv },
+	 { (char*) "f2id", Float2int_converter_double, sfloat2int_double },
 	 { (char*) "run", RunScript, sScript },
 	 { (char*) "img", Image_view, sImgView },
 	 { (char*) "resize", Image_resize, sResize },
@@ -165,18 +170,29 @@ UINT32 Squeeze(int argc, char** argv)
 
 UINT32 WeightAnalyzer(int argc, char** argv)
 {
-	if (argc != 2){
-		printf("ex) wa filename\n");
+	if (argc != 3 ){
+		printf("ex) wa filename (I/F)\n");
 		return -1;
 	}
-	weightAnalyzerOfFile(argv[1]);
+
+	if (strcmp(argv[2], "I") == NULL){
+
+		weightAnalyzerOfFile(argv[1]);
+	}
+	else if (strcmp(argv[2], "F") == NULL){
+		weightAnalyzerOfFileFloat(argv[1]);
+	}
+	else{
+		printf("Error!\n");
+	}
+
 	return 0;
 }
 
-UINT32 Float2int_converter(int argc, char** argv)
+UINT32 Quantization(int argc, char** argv)
 {
 	if (argc != 4){
-		printf("ex) f2i in-filename out-filename shift\n");
+		printf("ex) qunt in-filename out-filename shift\n");
 		//                    1          2          3
 		return -1;
 	}
@@ -184,6 +200,30 @@ UINT32 Float2int_converter(int argc, char** argv)
 	quantization_INT8_rapper(argv[1], argv[2],shift);
 	return 0;
 }
+
+UINT32 Float2int_converter(int argc, char** argv)
+{
+	if (argc != 3){
+		printf("ex) f2ic in-filename out-filename \n");
+		//                    1          2          
+		return -1;
+	}
+	quantization_float2INT8_rapper(argv[1], argv[2]);
+	return 0;
+}
+
+UINT32 Float2int_converter_double(int argc, char** argv)
+{
+	if (argc != 5){
+		printf("ex) f2id in1-filename  out1-filename  in2-filename  out2-filename \n");
+		//                    1          2             3               4 
+		return -1;
+	}
+	quantization_float2INT8_double_rapper(argv[1], argv[2], argv[3], argv[4]);
+	return 0;
+}
+
+
 
 UINT32 Image_view(int argc, char** argv)
 {
@@ -263,6 +303,7 @@ UINT32 Concatenate(int argc, char** argv)
 
 	return 0;
 }
+
 
 
 UINT32 Relu(int argc, char** argv)

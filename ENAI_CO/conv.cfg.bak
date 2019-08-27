@@ -1,4 +1,4 @@
-conv image/label9_1.txt 227 227 1 weights/int_conv1_0.txt 7 7 64 inout/001_conv1_out.txt 111 111 2 0
+conv image/label2_1.txt 227 227 1 weights/int_conv1_0.txt 7 7 64 inout/001_conv1_out.txt 111 111 2 0
 relu inout/001_conv1_out.txt 111 111 64 inout/002_relu1_out.txt
 maxp inout/002_relu1_out.txt 111 111 64 inout/003_maxp1_out.txt 3 3 2
 qunt inout/003_maxp1_out.txt inout/004_qunt1_out.txt 1

@@ -189,6 +189,7 @@ void file2data(char *filename,int *input_data ){
 			if (pStr != NULL){
 				num1 = atoi(pStr);
 				//printf("%d. %f\n", i + 1, num1);
+				
 				input_data[i] = num1;
 				i++;
 			}
@@ -410,6 +411,43 @@ void concatenate_rapper(char* input_file1, char* input_file2, char* output_file)
 	fclose(fd3);
 
 }
+/*
+void divider_rapper(char* input_file1, char* output_file2, char* output_file)
+{
+	FILE *fd1, *fd2, *fd3;
+
+	if ((fd1 = fopen(input_file1, "r")) == NULL){
+		printf("fopen fail\n");
+		return;
+	}
+	if ((fd2 = fopen(output_file2, "w")) == NULL){
+		printf("fopen fail\n");
+		return;
+	}
+	if ((fd3 = fopen(output_file, "w")) == NULL){
+		printf("fopen fail\n");
+		return;
+	}
+	char *pStr;
+
+	char buffer[100] = { 0, };
+	int i = 0;
+	while (!feof(fd1)){
+		pStr = fgets(buffer, sizeof(buffer), fd1);
+		if (pStr != NULL){			
+			i++;
+		}
+	}
+	
+
+
+
+	fclose(fd1);
+	fclose(fd2);
+	fclose(fd3);
+
+}
+*/
 
 void global_average_pooling_rapper(char* input_file, int input_height, int input_width, int input_ch, char* output_file)
 {

@@ -1,0 +1,34 @@
+f2ic float/conv10_0.txt					  int/int_conv10_0.txt              
+f2ic float/conv1_0.txt            int/int_conv1_0.txt               
+   
+f2id float/fire2_expand1x1_0.txt  int/int_fire2_expand1x1_0.txt float/fire2_expand3x3_0.txt  int/int_fire2_expand3x3_0.txt      
+
+f2ic float/fire2_squeeze1x1_0.txt  int/int_fire2_squeeze1x1_0.txt  
+        
+f2id float/fire3_expand1x1_0.txt  int/int_fire3_expand1x1_0.txt float/fire3_expand3x3_0.txt  int/int_fire3_expand3x3_0.txt     
+
+f2ic float/fire3_squeeze1x1_0.txt int/int_fire3_squeeze1x1_0.txt    
+
+f2id float/fire4_expand1x1_0.txt  int/int_fire4_expand1x1_0.txt float/fire4_expand3x3_0.txt  int/int_fire4_expand3x3_0.txt     
+
+f2ic float/fire4_squeeze1x1_0.txt int/int_fire4_squeeze1x1_0.txt    
+
+f2id float/fire5_expand1x1_0.txt  int/int_fire5_expand1x1_0.txt float/fire5_expand3x3_0.txt  int/int_fire5_expand3x3_0.txt     
+
+f2ic float/fire5_squeeze1x1_0.txt int/int_fire5_squeeze1x1_0.txt    
+
+f2id float/fire6_expand1x1_0.txt  int/int_fire6_expand1x1_0.txt float/fire6_expand3x3_0.txt  int/int_fire6_expand3x3_0.txt     
+
+f2ic float/fire6_squeeze1x1_0.txt int/int_fire6_squeeze1x1_0.txt    
+
+f2id float/fire7_expand1x1_0.txt  int/int_fire7_expand1x1_0.txt float/fire7_expand3x3_0.txt  int/int_fire7_expand3x3_0.txt     
+
+f2ic float/fire7_squeeze1x1_0.txt int/int_fire7_squeeze1x1_0.txt    
+
+f2id float/fire8_expand1x1_0.txt  int/int_fire8_expand1x1_0.txt float/fire8_expand3x3_0.txt  int/int_fire8_expand3x3_0.txt     
+
+f2ic float/fire8_squeeze1x1_0.txt int/int_fire8_squeeze1x1_0.txt    
+
+f2id float/fire9_expand1x1_0.txt  int/int_fire9_expand1x1_0.txt float/fire9_expand3x3_0.txt  int/int_fire9_expand3x3_0.txt     
+
+f2ic float/fire9_squeeze1x1_0.txt int/int_fire9_squeeze1x1_0.txt    

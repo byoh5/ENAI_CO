@@ -1,0 +1,627 @@
+ENAI>run analyer.cfg                            
+Use (analyer.cfg) file                          
+test_round 1                                    
+Round 0, Errcnt 0                               
+cmd>wa float/conv10_0.txt             F         
+-------- float/conv10_0.txt --------            
+ABS MAX Value   : 0.348708                      
+Positive MAX    : 0.348708                      
+Negative MIN    : -0.220612                     
+Positive AVG    : 0.072437                      
+Negative AVG    : -0.041446                     
+Zero                    : 0                     
+Total                   : 51200                 
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/conv1_0.txt              F         
+-------- float/conv1_0.txt --------             
+ABS MAX Value   : 0.736362                      
+Positive MAX    : 0.616322                      
+Negative MIN    : -0.736362                     
+Positive AVG    : 0.102146                      
+Negative AVG    : -0.118694                     
+Zero                    : 0                     
+Total                   : 3136                  
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire2_expand1x1_0.txt    F         
+-------- float/fire2_expand1x1_0.txt --------   
+ABS MAX Value   : 0.546726                      
+Positive MAX    : 0.546726                      
+Negative MIN    : -0.367059                     
+Positive AVG    : 0.029732                      
+Negative AVG    : -0.019868                     
+Zero                    : 0                     
+Total                   : 1024                  
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire2_expand3x3_0.txt    F         
+-------- float/fire2_expand3x3_0.txt --------   
+ABS MAX Value   : 1.129262                      
+Positive MAX    : 0.849877                      
+Negative MIN    : -1.129262                     
+Positive AVG    : 0.013962                      
+Negative AVG    : -0.015836                     
+Zero                    : 0                     
+Total                   : 9216                  
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire2_squeeze1x1_0.txt   F         
+-------- float/fire2_squeeze1x1_0.txt --------  
+ABS MAX Value   : 0.943261                      
+Positive MAX    : 0.882418                      
+Negative MIN    : -0.943261                     
+Positive AVG    : 0.040254                      
+Negative AVG    : -0.033887                     
+Zero                    : 0                     
+Total                   : 1024                  
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire3_expand1x1_0.txt    F         
+-------- float/fire3_expand1x1_0.txt --------   
+ABS MAX Value   : 0.345039                      
+Positive MAX    : 0.345039                      
+Negative MIN    : -0.171146                     
+Positive AVG    : 0.043477                      
+Negative AVG    : -0.019763                     
+Zero                    : 0                     
+Total                   : 1024                  
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire3_expand3x3_0.txt    F         
+-------- float/fire3_expand3x3_0.txt --------   
+ABS MAX Value   : 0.511038                      
+Positive MAX    : 0.511038                      
+Negative MIN    : -0.386420                     
+Positive AVG    : 0.041031                      
+Negative AVG    : -0.038776                     
+Zero                    : 0                     
+Total                   : 9216                  
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire3_squeeze1x1_0.txt   F         
+-------- float/fire3_squeeze1x1_0.txt --------  
+ABS MAX Value   : 0.650622                      
+Positive MAX    : 0.650622                      
+Negative MIN    : -0.396106                     
+Positive AVG    : 0.046337                      
+Negative AVG    : -0.031321                     
+Zero                    : 0                     
+Total                   : 2048                  
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire4_expand1x1_0.txt    F         
+-------- float/fire4_expand1x1_0.txt --------   
+ABS MAX Value   : 0.306195                      
+Positive MAX    : 0.306195                      
+Negative MIN    : -0.204538                     
+Positive AVG    : 0.021228                      
+Negative AVG    : -0.011841                     
+Zero                    : 0                     
+Total                   : 4096                  
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire4_expand3x3_0.txt    F         
+-------- float/fire4_expand3x3_0.txt --------   
+ABS MAX Value   : 0.383229                      
+Positive MAX    : 0.325395                      
+Negative MIN    : -0.383229                     
+Positive AVG    : 0.016953                      
+Negative AVG    : -0.017337                     
+Zero                    : 0                     
+Total                   : 36864                 
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire4_squeeze1x1_0.txt   F         
+-------- float/fire4_squeeze1x1_0.txt --------  
+ABS MAX Value   : 0.559827                      
+Positive MAX    : 0.559827                      
+Negative MIN    : -0.505642                     
+Positive AVG    : 0.036459                      
+Negative AVG    : -0.029794                     
+Zero                    : 0                     
+Total                   : 4096                  
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire5_expand1x1_0.txt    F         
+-------- float/fire5_expand1x1_0.txt --------   
+ABS MAX Value   : 0.278086                      
+Positive MAX    : 0.278086                      
+Negative MIN    : -0.152109                     
+Positive AVG    : 0.032047                      
+Negative AVG    : -0.019388                     
+Zero                    : 0                     
+Total                   : 4096                  
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire5_expand3x3_0.txt    F         
+-------- float/fire5_expand3x3_0.txt --------   
+ABS MAX Value   : 0.389335                      
+Positive MAX    : 0.389335                      
+Negative MIN    : -0.288470                     
+Positive AVG    : 0.042136                      
+Negative AVG    : -0.043452                     
+Zero                    : 0                     
+Total                   : 36864                 
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire5_squeeze1x1_0.txt   F         
+-------- float/fire5_squeeze1x1_0.txt --------  
+ABS MAX Value   : 0.364629                      
+Positive MAX    : 0.364629                      
+Negative MIN    : -0.305692                     
+Positive AVG    : 0.044142                      
+Negative AVG    : -0.034733                     
+Zero                    : 0                     
+Total                   : 8192                  
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire6_expand1x1_0.txt    F         
+-------- float/fire6_expand1x1_0.txt --------   
+ABS MAX Value   : 0.259213                      
+Positive MAX    : 0.259213                      
+Negative MIN    : -0.194625                     
+Positive AVG    : 0.031320                      
+Negative AVG    : -0.024505                     
+Zero                    : 0                     
+Total                   : 9216                  
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire6_expand3x3_0.txt    F         
+-------- float/fire6_expand3x3_0.txt --------   
+ABS MAX Value   : 0.344059                      
+Positive MAX    : 0.344059                      
+Negative MIN    : -0.277728                     
+Positive AVG    : 0.035330                      
+Negative AVG    : -0.035691                     
+Zero                    : 0                     
+Total                   : 82944                 
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire6_squeeze1x1_0.txt   F         
+-------- float/fire6_squeeze1x1_0.txt --------  
+ABS MAX Value   : 0.483460                      
+Positive MAX    : 0.483460                      
+Negative MIN    : -0.406356                     
+Positive AVG    : 0.053182                      
+Negative AVG    : -0.047974                     
+Zero                    : 0                     
+Total                   : 12288                 
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire7_expand1x1_0.txt    F         
+-------- float/fire7_expand1x1_0.txt --------   
+ABS MAX Value   : 0.249247                      
+Positive MAX    : 0.249247                      
+Negative MIN    : -0.124001                     
+Positive AVG    : 0.031658                      
+Negative AVG    : -0.024715                     
+Zero                    : 0                     
+Total                   : 9216                  
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire7_expand3x3_0.txt    F         
+-------- float/fire7_expand3x3_0.txt --------   
+ABS MAX Value   : 0.294495                      
+Positive MAX    : 0.294495                      
+Negative MIN    : -0.249387                     
+Positive AVG    : 0.043683                      
+Negative AVG    : -0.043369                     
+Zero                    : 0                     
+Total                   : 82944                 
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire7_squeeze1x1_0.txt   F         
+-------- float/fire7_squeeze1x1_0.txt --------  
+ABS MAX Value   : 0.539873                      
+Positive MAX    : 0.539873                      
+Negative MIN    : -0.296439                     
+Positive AVG    : 0.055322                      
+Negative AVG    : -0.046661                     
+Zero                    : 0                     
+Total                   : 18432                 
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire8_expand1x1_0.txt    F         
+-------- float/fire8_expand1x1_0.txt --------   
+ABS MAX Value   : 0.166933                      
+Positive MAX    : 0.166933                      
+Negative MIN    : -0.090257                     
+Positive AVG    : 0.021838                      
+Negative AVG    : -0.017424                     
+Zero                    : 0                     
+Total                   : 16384                 
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire8_expand3x3_0.txt    F         
+-------- float/fire8_expand3x3_0.txt --------   
+ABS MAX Value   : 0.290992                      
+Positive MAX    : 0.290992                      
+Negative MIN    : -0.227541                     
+Positive AVG    : 0.036644                      
+Negative AVG    : -0.036687                     
+Zero                    : 0                     
+Total                   : 147456                
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire8_squeeze1x1_0.txt   F         
+-------- float/fire8_squeeze1x1_0.txt --------  
+ABS MAX Value   : 0.551926                      
+Positive MAX    : 0.551926                      
+Negative MIN    : -0.288062                     
+Positive AVG    : 0.053047                      
+Negative AVG    : -0.047010                     
+Zero                    : 0                     
+Total                   : 24576                 
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire9_expand1x1_0.txt    F         
+-------- float/fire9_expand1x1_0.txt --------   
+ABS MAX Value   : 0.318925                      
+Positive MAX    : 0.318925                      
+Negative MIN    : -0.176962                     
+Positive AVG    : 0.053071                      
+Negative AVG    : -0.045882                     
+Zero                    : 0                     
+Total                   : 16384                 
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire9_expand3x3_0.txt    F         
+-------- float/fire9_expand3x3_0.txt --------   
+ABS MAX Value   : 0.249343                      
+Positive MAX    : 0.249343                      
+Negative MIN    : -0.206697                     
+Positive AVG    : 0.031637                      
+Negative AVG    : -0.030324                     
+Zero                    : 0                     
+Total                   : 147456                
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa float/fire9_squeeze1x1_0.txt   F         
+-------- float/fire9_squeeze1x1_0.txt --------  
+ABS MAX Value   : 0.461358                      
+Positive MAX    : 0.461358                      
+Negative MIN    : -0.317094                     
+Positive AVG    : 0.048648                      
+Negative AVG    : -0.042914                     
+Zero                    : 0                     
+Total                   : 32768                 
+Zero percent    : 0.000000                      
+----------------------------                    
+                                                
+cmd>wa int/int_conv10_0.txt               I     
+-------- int/int_conv10_0.txt --------          
+ABS MAX Value   : 127                           
+Positive MAX    : 127                           
+Negative MIN    : -80                           
+Positive AVG    : 26                            
+Negative AVG    : -15                           
+Zero                    : 1662                  
+Total                   : 51200                 
+Zero percent    : 3.246094                      
+----------------------------                    
+                                                
+cmd>wa int/int_conv1_0.txt                I     
+-------- int/int_conv1_0.txt --------           
+ABS MAX Value   : 126                           
+Positive MAX    : 106                           
+Negative MIN    : -126                          
+Positive AVG    : 17                            
+Negative AVG    : -20                           
+Zero                    : 83                    
+Total                   : 3136                  
+Zero percent    : 2.646684                      
+----------------------------                    
+                                                
+cmd>wa int/int_fire2_expand1x1_0.txt      I     
+-------- int/int_fire2_expand1x1_0.txt -------- 
+ABS MAX Value   : 61                            
+Positive MAX    : 61                            
+Negative MIN    : -41                           
+Positive AVG    : 8                             
+Negative AVG    : -5                            
+Zero                    : 652                   
+Total                   : 1024                  
+Zero percent    : 63.671875                     
+----------------------------                    
+                                                
+cmd>wa int/int_fire2_expand3x3_0.txt      I     
+-------- int/int_fire2_expand3x3_0.txt -------- 
+ABS MAX Value   : 127                           
+Positive MAX    : 95                            
+Negative MIN    : -127                          
+Positive AVG    : 5                             
+Negative AVG    : -5                            
+Zero                    : 6810                  
+Total                   : 9216                  
+Zero percent    : 73.893231                     
+----------------------------                    
+                                                
+cmd>wa int/int_fire2_squeeze1x1_0.txt     I     
+-------- int/int_fire2_squeeze1x1_0.txt --------
+ABS MAX Value   : 127                           
+Positive MAX    : 118                           
+Negative MIN    : -127                          
+Positive AVG    : 11                            
+Negative AVG    : -9                            
+Zero                    : 578                   
+Total                   : 1024                  
+Zero percent    : 56.445313                     
+----------------------------                    
+                                                
+cmd>wa int/int_fire3_expand1x1_0.txt      I     
+-------- int/int_fire3_expand1x1_0.txt -------- 
+ABS MAX Value   : 85                            
+Positive MAX    : 85                            
+Negative MIN    : -42                           
+Positive AVG    : 14                            
+Negative AVG    : -6                            
+Zero                    : 305                   
+Total                   : 1024                  
+Zero percent    : 29.785156                     
+----------------------------                    
+                                                
+cmd>wa int/int_fire3_expand3x3_0.txt      I     
+-------- int/int_fire3_expand3x3_0.txt -------- 
+ABS MAX Value   : 127                           
+Positive MAX    : 127                           
+Negative MIN    : -96                           
+Positive AVG    : 12                            
+Negative AVG    : -11                           
+Zero                    : 1970                  
+Total                   : 9216                  
+Zero percent    : 21.375868                     
+----------------------------                    
+                                                
+cmd>wa int/int_fire3_squeeze1x1_0.txt     I     
+-------- int/int_fire3_squeeze1x1_0.txt --------
+ABS MAX Value   : 126                           
+Positive MAX    : 126                           
+Negative MIN    : -77                           
+Positive AVG    : 13                            
+Negative AVG    : -9                            
+Zero                    : 746                   
+Total                   : 2048                  
+Zero percent    : 36.425781                     
+----------------------------                    
+                                                
+cmd>wa int/int_fire4_expand1x1_0.txt      I     
+-------- int/int_fire4_expand1x1_0.txt -------- 
+ABS MAX Value   : 101                           
+Positive MAX    : 101                           
+Negative MIN    : -67                           
+Positive AVG    : 13                            
+Negative AVG    : -8                            
+Zero                    : 2197                  
+Total                   : 4096                  
+Zero percent    : 53.637695                     
+----------------------------                    
+                                                
+cmd>wa int/int_fire4_expand3x3_0.txt      I     
+-------- int/int_fire4_expand3x3_0.txt -------- 
+ABS MAX Value   : 127                           
+Positive MAX    : 107                           
+Negative MIN    : -127                          
+Positive AVG    : 11                            
+Negative AVG    : -10                           
+Zero                    : 18678                 
+Total                   : 36864                 
+Zero percent    : 50.667316                     
+----------------------------                    
+                                                
+cmd>wa int/int_fire4_squeeze1x1_0.txt     I     
+-------- int/int_fire4_squeeze1x1_0.txt --------
+ABS MAX Value   : 127                           
+Positive MAX    : 127                           
+Negative MIN    : -114                          
+Positive AVG    : 13                            
+Negative AVG    : -12                           
+Zero                    : 1889                  
+Total                   : 4096                  
+Zero percent    : 46.118164                     
+----------------------------                    
+                                                
+cmd>wa int/int_fire5_expand1x1_0.txt      I     
+-------- int/int_fire5_expand1x1_0.txt -------- 
+ABS MAX Value   : 90                            
+Positive MAX    : 90                            
+Negative MIN    : -49                           
+Positive AVG    : 12                            
+Negative AVG    : -6                            
+Zero                    : 643                   
+Total                   : 4096                  
+Zero percent    : 15.698242                     
+----------------------------                    
+                                                
+cmd>wa int/int_fire5_expand3x3_0.txt      I     
+-------- int/int_fire5_expand3x3_0.txt -------- 
+ABS MAX Value   : 127                           
+Positive MAX    : 127                           
+Negative MIN    : -94                           
+Positive AVG    : 14                            
+Negative AVG    : -14                           
+Zero                    : 3105                  
+Total                   : 36864                 
+Zero percent    : 8.422852                      
+----------------------------                    
+                                                
+cmd>wa int/int_fire5_squeeze1x1_0.txt     I     
+-------- int/int_fire5_squeeze1x1_0.txt --------
+ABS MAX Value   : 127                           
+Positive MAX    : 127                           
+Negative MIN    : -106                          
+Positive AVG    : 18                            
+Negative AVG    : -13                           
+Zero                    : 1322                  
+Total                   : 8192                  
+Zero percent    : 16.137695                     
+----------------------------                    
+                                                
+cmd>wa int/int_fire6_expand1x1_0.txt      I     
+-------- int/int_fire6_expand1x1_0.txt -------- 
+ABS MAX Value   : 95                            
+Positive MAX    : 95                            
+Negative MIN    : -71                           
+Positive AVG    : 13                            
+Negative AVG    : -10                           
+Zero                    : 1493                  
+Total                   : 9216                  
+Zero percent    : 16.200086                     
+----------------------------                    
+                                                
+cmd>wa int/int_fire6_expand3x3_0.txt      I     
+-------- int/int_fire6_expand3x3_0.txt -------- 
+ABS MAX Value   : 127                           
+Positive MAX    : 127                           
+Negative MIN    : -102                          
+Positive AVG    : 14                            
+Negative AVG    : -14                           
+Zero                    : 11269                 
+Total                   : 82944                 
+Zero percent    : 13.586275                     
+----------------------------                    
+                                                
+cmd>wa int/int_fire6_squeeze1x1_0.txt     I     
+-------- int/int_fire6_squeeze1x1_0.txt --------
+ABS MAX Value   : 127                           
+Positive MAX    : 127                           
+Negative MIN    : -106                          
+Positive AVG    : 15                            
+Negative AVG    : -14                           
+Zero                    : 1971                  
+Total                   : 12288                 
+Zero percent    : 16.040039                     
+----------------------------                    
+                                                
+cmd>wa int/int_fire7_expand1x1_0.txt      I     
+-------- int/int_fire7_expand1x1_0.txt -------- 
+ABS MAX Value   : 107                           
+Positive MAX    : 107                           
+Negative MIN    : -53                           
+Positive AVG    : 14                            
+Negative AVG    : -10                           
+Zero                    : 505                   
+Total                   : 9216                  
+Zero percent    : 5.479601                      
+----------------------------                    
+                                                
+cmd>wa int/int_fire7_expand3x3_0.txt      I     
+-------- int/int_fire7_expand3x3_0.txt -------- 
+ABS MAX Value   : 127                           
+Positive MAX    : 127                           
+Negative MIN    : -107                          
+Positive AVG    : 19                            
+Negative AVG    : -18                           
+Zero                    : 2803                  
+Total                   : 82944                 
+Zero percent    : 3.379389                      
+----------------------------                    
+                                                
+cmd>wa int/int_fire7_squeeze1x1_0.txt     I     
+-------- int/int_fire7_squeeze1x1_0.txt --------
+ABS MAX Value   : 127                           
+Positive MAX    : 127                           
+Negative MIN    : -69                           
+Positive AVG    : 13                            
+Negative AVG    : -11                           
+Zero                    : 1343                  
+Total                   : 18432                 
+Zero percent    : 7.286242                      
+----------------------------                    
+                                                
+cmd>wa int/int_fire8_expand1x1_0.txt      I     
+-------- int/int_fire8_expand1x1_0.txt -------- 
+ABS MAX Value   : 72                            
+Positive MAX    : 72                            
+Negative MIN    : -39                           
+Positive AVG    : 10                            
+Negative AVG    : -7                            
+Zero                    : 1222                  
+Total                   : 16384                 
+Zero percent    : 7.458496                      
+----------------------------                    
+                                                
+cmd>wa int/int_fire8_expand3x3_0.txt      I     
+-------- int/int_fire8_expand3x3_0.txt -------- 
+ABS MAX Value   : 127                           
+Positive MAX    : 127                           
+Negative MIN    : -99                           
+Positive AVG    : 16                            
+Negative AVG    : -15                           
+Zero                    : 5717                  
+Total                   : 147456                
+Zero percent    : 3.877089                      
+----------------------------                    
+                                                
+cmd>wa int/int_fire8_squeeze1x1_0.txt     I     
+-------- int/int_fire8_squeeze1x1_0.txt --------
+ABS MAX Value   : 127                           
+Positive MAX    : 127                           
+Negative MIN    : -66                           
+Positive AVG    : 12                            
+Negative AVG    : -10                           
+Zero                    : 1623                  
+Total                   : 24576                 
+Zero percent    : 6.604004                      
+----------------------------                    
+                                                
+cmd>wa int/int_fire9_expand1x1_0.txt      I     
+-------- int/int_fire9_expand1x1_0.txt -------- 
+ABS MAX Value   : 127                           
+Positive MAX    : 127                           
+Negative MIN    : -70                           
+Positive AVG    : 21                            
+Negative AVG    : -18                           
+Zero                    : 382                   
+Total                   : 16384                 
+Zero percent    : 2.331543                      
+----------------------------                    
+                                                
+cmd>wa int/int_fire9_expand3x3_0.txt      I     
+-------- int/int_fire9_expand3x3_0.txt -------- 
+ABS MAX Value   : 99                            
+Positive MAX    : 99                            
+Negative MIN    : -82                           
+Positive AVG    : 13                            
+Negative AVG    : -12                           
+Zero                    : 7127                  
+Total                   : 147456                
+Zero percent    : 4.833306                      
+----------------------------                    
+                                                
+cmd>wa int/int_fire9_squeeze1x1_0.txt     I     
+-------- int/int_fire9_squeeze1x1_0.txt --------
+ABS MAX Value   : 127                           
+Positive MAX    : 127                           
+Negative MIN    : -87                           
+Positive AVG    : 14                            
+Negative AVG    : -11                           
+Zero                    : 2231                  
+Total                   : 32768                 
+Zero percent    : 6.808472                      
+----------------------------                    
