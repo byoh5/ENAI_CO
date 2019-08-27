@@ -1,0 +1,11 @@
+resize image/label0_1.jpg 227 227 image/label0_1.txt
+resize image/label1_1.jpg 227 227 image/label1_1.txt
+resize image/label2_1.jpg 227 227 image/label2_1.txt
+resize image/label3_1.jpg 227 227 image/label3_1.txt
+resize image/label4_1.jpg 227 227 image/label4_1.txt
+resize image/label5_1.jpg 227 227 image/label5_1.txt
+resize image/label6_1.jpg 227 227 image/label6_1.txt
+resize image/label7_1.jpg 227 227 image/label7_1.txt
+resize image/label8_1.jpg 227 227 image/label8_1.txt
+resize image/label9_1.jpg 227 227 image/label9_1.txt
+resize image/label10_1.jpg 227 227 image/label10_1.txt     

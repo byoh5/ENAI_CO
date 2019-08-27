@@ -1,22 +1,24 @@
-conv inout/7img_text.txt 227 227 1 weights/int_conv1_0.txt 7 7 64 inout/001_conv1_out.txt 111 111 2 0
+conv image/label9_1.txt 227 227 1 weights/int_conv1_0.txt 7 7 64 inout/001_conv1_out.txt 111 111 2 0
 relu inout/001_conv1_out.txt 111 111 64 inout/002_relu1_out.txt
-qunt inout/002_relu1_out.txt inout/003_qunt1_out.txt
-maxp inout/003_qunt1_out.txt 111 111 64 inout/004_maxp1_out.txt 3 3 2
+maxp inout/002_relu1_out.txt 111 111 64 inout/003_maxp1_out.txt 3 3 2
+qunt inout/003_maxp1_out.txt inout/004_qunt1_out.txt 1
 //Fire2~3
-fire inout/004_maxp1_out.txt 55 55 64 weights/int_fire2_squeeze1x1_0.txt weights/int_fire2_expand1x1_0.txt weights/int_fire2_expand3x3_0.txt 16 64 64 fire/fire2 55 55 128
+fire inout/004_qunt1_out.txt 55 55 64 weights/int_fire2_squeeze1x1_0.txt weights/int_fire2_expand1x1_0.txt weights/int_fire2_expand3x3_0.txt 16 64 64 fire/fire2 55 55 128
 fire fire/fire2_conc_out.txt 55 55 128 weights/int_fire3_squeeze1x1_0.txt weights/int_fire3_expand1x1_0.txt weights/int_fire3_expand3x3_0.txt 16 64 64 fire/fire3 55 55 128
-maxp fire/fire3_conc_out.txt 55 55 128 inout/025_maxp2_out.txt 3 3 2
+maxp fire/fire3_conc_out.txt 55 55 128 inout/005_maxp2_out.txt 3 3 2
+qunt inout/005_maxp2_out.txt inout/006_qunt2_out.txt 1
 //Fire4~5
-fire inout/025_maxp2_out.txt 27 27 128 weights/int_fire4_squeeze1x1_0.txt weights/int_fire4_expand1x1_0.txt weights/int_fire4_expand3x3_0.txt 32 128 128 fire/fire4 27 27 256
+fire inout/006_qunt2_out.txt 27 27 128 weights/int_fire4_squeeze1x1_0.txt weights/int_fire4_expand1x1_0.txt weights/int_fire4_expand3x3_0.txt 32 128 128 fire/fire4 27 27 256
 fire fire/fire4_conc_out.txt 27 27 256 weights/int_fire5_squeeze1x1_0.txt weights/int_fire5_expand1x1_0.txt weights/int_fire5_expand3x3_0.txt 32 128 128 fire/fire5 27 27 256
-maxp fire/fire5_conc_out.txt 27 27 256 inout/035_maxp3_out.txt 3 3 2
+maxp fire/fire5_conc_out.txt 27 27 256 inout/007_maxp3_out.txt 3 3 2
+qunt inout/007_maxp3_out.txt inout/008_qunt3_out.txt 1
 //Fire6~9
-fire inout/035_maxp3_out.txt 13 13 256 weights/int_fire6_squeeze1x1_0.txt weights/int_fire6_expand1x1_0.txt weights/int_fire6_expand3x3_0.txt 48 192 192 fire/fire6 13 13 384
+fire inout/008_qunt3_out.txt 13 13 256 weights/int_fire6_squeeze1x1_0.txt weights/int_fire6_expand1x1_0.txt weights/int_fire6_expand3x3_0.txt 48 192 192 fire/fire6 13 13 384
 fire fire/fire6_conc_out.txt 13 13 384 weights/int_fire7_squeeze1x1_0.txt weights/int_fire7_expand1x1_0.txt weights/int_fire7_expand3x3_0.txt 48 192 192 fire/fire7 13 13 384
 fire fire/fire7_conc_out.txt 13 13 384 weights/int_fire8_squeeze1x1_0.txt weights/int_fire8_expand1x1_0.txt weights/int_fire8_expand3x3_0.txt 64 256 256 fire/fire8 13 13 512
 fire fire/fire8_conc_out.txt 13 13 512 weights/int_fire9_squeeze1x1_0.txt weights/int_fire9_expand1x1_0.txt weights/int_fire9_expand3x3_0.txt 64 256 256 fire/fire9 13 13 512
 conv fire/fire9_conc_out.txt 13 13 512 weights/int_conv10_0.txt 1 1 100 inout/036_conv11_out.txt 13 13 1 0 
 relu inout/036_conv11_out.txt 13 13 100 inout/037_relu11_out.txt 
-qunt inout/037_relu11_out.txt inout/038_qunt11_out.txt
-
+qunt inout/037_relu11_out.txt inout/038_qunt11_out.txt 7
 gavp inout/038_qunt11_out.txt 13 13 100 inout/039_gavp_out.txt
+maxv inout/039_gavp_out.txt 100

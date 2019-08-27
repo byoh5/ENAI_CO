@@ -70,20 +70,44 @@ void Convert_INT(char* input_name, char* output_name, float ALL_max, int bits, i
 		char buffer[20] = { 0, };
 		char s1[20] = { 0, };
 		char *pStr;
-		float num1;
+		int num1;
 		int num2;
-		float bit_max = (pow(2.0, bits - 1) - 1);
-		float buf = (bit_max / ALL_max);
+		int bit_max = (pow(2.0, bits - 1) - 1);
+		int buf = (int)ALL_max ;
+
+		
+
+		UINT32 shift=0;
+		
+		for (int i = 0; i < 32; i++){
+			buf = buf >> 1;
+			if (buf == 0){
+				shift = i;
+				break;
+			}
+		}
+
+		printf("div %f %d %d \n", ALL_max, buf, shift);
+
+		if (shift>8) shift = shift - 6;
+		else         shift = 0;
+
+		printf("#%d \n", shift);
 
 		while (!feof(fp)){
 			pStr = fgets(buffer, sizeof(buffer), fp);
 			if (pStr != NULL){
 				num1 = atof(pStr);
-				num2 = num1 * buf;
+				num2 = num1 >> shift;
 
-				if (num2 > bit_max) num2 = bit_max;
-				if (num2 < -(bit_max + 1)) num2 = -(bit_max + 1);
-
+				if (num2 > bit_max){
+					printf("Value over flow %d\n", num2);
+				//	num2 = bit_max;
+				}
+				if (num2 < -(bit_max + 1)){
+					printf("Value under flow %d\n", num2);
+				//	num2 = -(bit_max + 1);
+				}
 				if (TYPE2 == STRING) {
 				//	sprintf(s1, "%d", num2);
 					fprintf(fp1, "%d\n", num2);
@@ -100,9 +124,47 @@ void Convert_INT(char* input_name, char* output_name, float ALL_max, int bits, i
 	if(fp1) fclose(fp1);
 }
 
-void quantization_INT8_rapper(char* input_name, char* output_name)
+void Convert_shift(char* input_name, char* output_name, int shiftnum) {
+
+	FILE* fp = NULL;
+	FILE* fp1 = NULL;
+
+	if ((fp = fopen(input_name, "r")) == NULL){
+		printf("fopen fail! \n");
+		return;
+	}
+	if ((fp1 = fopen(output_name, "w")) == NULL){
+		printf("fopen fail! \n");
+		return;
+	}
+
+	if (fp != NULL)
+	{
+		char buffer[50] = { 0, };
+		char *pStr;
+		int num2;
+	
+		while (!feof(fp)){
+			pStr = fgets(buffer, sizeof(buffer), fp);
+			if (pStr != NULL){
+				num2 = atoi(pStr);
+				fprintf(fp1, "%d\n", num2 >> shiftnum);
+			}
+		
+		}
+	}
+
+	if (fp)  fclose(fp);
+	if (fp1)  fclose(fp1);
+	
+}
+
+
+void quantization_INT8_rapper(char* input_name, char* output_name,int shift)
 {
 	float max = 0;
 	max = absolute_max_value(input_name);
 	Convert_INT(input_name, output_name, max, 8, STRING);
+
+//	Convert_shift(input_name, output_name, shift);
 }

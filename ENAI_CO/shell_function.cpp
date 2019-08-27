@@ -28,6 +28,7 @@ using namespace std;
  const char* simgVfd[] = { "Image view from data ", (char*)0 };
  const char* sFire[] = { "Fire ", (char*)0 };
  const char* sGrobalAveragePooling[] = { "GrobalAveragePooling ", (char*)0 };
+ const char* sMaxvalue[] = { "Maxvalue ", (char*)0 };
 
  tMonCmd gCmdList[] =
  {
@@ -45,6 +46,7 @@ using namespace std;
 	 { (char*) "imfd", Image_viewFromData, simgVfd },
 	 { (char*) "fire", Fire, sFire },
 	 { (char*) "gavp", Grobal_Average_pooling, sGrobalAveragePooling },
+	 { (char*) "maxv", Max_value, sMaxvalue },
 	 { 0, 0, 0 }
  };
 
@@ -173,11 +175,13 @@ UINT32 WeightAnalyzer(int argc, char** argv)
 
 UINT32 Float2int_converter(int argc, char** argv)
 {
-	if (argc != 3){
-		printf("ex) f2i in-filename out-filename\n");
+	if (argc != 4){
+		printf("ex) f2i in-filename out-filename shift\n");
+		//                    1          2          3
 		return -1;
 	}
-	quantization_INT8_rapper(argv[1], argv[2]);
+	int shift = atoi(argv[3]);
+	quantization_INT8_rapper(argv[1], argv[2],shift);
 	return 0;
 }
 
@@ -211,8 +215,9 @@ UINT32 Image_viewFromData(int argc, char** argv)
 
 UINT32 Image_resize(int argc, char** argv)
 {
-	if (argc != 4){
-		printf("ex)resize filename H-size W-size out-filename\n");
+	if (argc != 6){
+		printf("ex)resize filename H-size W-size out-filename ch\n");
+		//                    1       2    3            4     5
 		return -1;
 	}
 	dataResize(argc, argv);
@@ -326,6 +331,7 @@ UINT32 Fire(int argc, char** argv)
 	char qunt_2[128];
 	char qunt_3[128];
 	char conc[128];
+	char conc_t[128];
 
 	sprintf(conv_1, "%s_conv_1_out.txt", argv[11]);
 	sprintf(conv_2, "%s_conv_2_out.txt", argv[11]);
@@ -336,27 +342,32 @@ UINT32 Fire(int argc, char** argv)
 	sprintf(qunt_1, "%s_qunt_1_out.txt", argv[11]);
 	sprintf(qunt_2, "%s_qunt_2_out.txt", argv[11]);
 	sprintf(qunt_3, "%s_qunt_3_out.txt", argv[11]);
-	sprintf(conc,   "%s_conc_out.txt"  , argv[11]);
+	sprintf(conc, "%s_conc_out.txt", argv[11]);
+	sprintf(conc_t, "%s_conc_t_out.txt", argv[11]);
 
 	standard_convolution_int_rapper(argv[1], in_H, in_W, in_ch, argv[5], 1, 1, k_s1, conv_1, in_H, in_W, 1, 0);
 
 	relu_rapper(conv_1, in_H, in_W, k_s1, relu_1);
 
-	quantization_INT8_rapper(relu_1, qunt_1);
+	quantization_INT8_rapper(relu_1, qunt_1,7);
 
 	standard_convolution_int_rapper(qunt_1, in_H, in_W, k_s1, argv[6], 1, 1, k_s2, conv_2, in_H, in_W, 1, 0);
 
 	relu_rapper(conv_2, in_H, in_W, k_s2, relu_2);
 
-	quantization_INT8_rapper(relu_2, qunt_2);
+//	quantization_INT8_rapper(relu_2, qunt_2,7);
 
 	standard_convolution_int_rapper(qunt_1, in_H, in_W, k_s1, argv[7], 3, 3, k_s3, conv_3, in_H, in_W, 1, 1);
 
 	relu_rapper(conv_3, in_H, in_W, k_s3, relu_3);
 
-	quantization_INT8_rapper(relu_3, qunt_3);
+//	quantization_INT8_rapper(relu_3, qunt_3,7);
 
-	concatenate_rapper(qunt_2, qunt_3, conc);
+//	concatenate_rapper(qunt_2, qunt_3, conc);
+
+	concatenate_rapper(relu_2, relu_3, conc_t);
+
+	quantization_INT8_rapper(conc_t, conc, 7);
 
 	return 0;
 }
@@ -374,6 +385,21 @@ UINT32 Grobal_Average_pooling(int argc, char** argv)
 	int in_ch = atoi(argv[4]);
 
 	global_average_pooling_rapper(argv[1],in_H,in_W,in_ch,argv[5]);
+
+	return 0;
+}
+
+UINT32 Max_value(int argc, char** argv)
+{
+	if (argc != 3){
+		printf("ex)maxv in-filename insize \n");
+		//                   1        2          
+		return -1;
+	}
+	int size = atoi(argv[2]);
+	
+
+	max_val(argv[1], size);
 
 	return 0;
 }

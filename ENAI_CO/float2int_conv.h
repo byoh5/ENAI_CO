@@ -4,7 +4,7 @@
 extern float absolute_max_value(char *FILE_name);
 extern void Convert_INT(char *input_name, char *output_name, float ALL_max, int bits, int TYPE2);
 
-extern void quantization_INT8_rapper(char* input_name, char* output_name);
+extern void quantization_INT8_rapper(char* input_name, char* output_name, int shift);
 
 #define STRING 0
 #define BINARY 1

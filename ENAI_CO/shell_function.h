@@ -24,6 +24,7 @@ extern const char* sMaxpooling[];
 extern const char* simgVfd[];
 extern const char* sFire[];
 extern const char* sGrobalAveragePooling[];
+extern const char* sMaxvalue[];
 
 extern tMonCmd gCmdList[];
 
@@ -41,5 +42,7 @@ extern UINT32 MaxPooling(int argc, char** argv);
 extern UINT32 Image_viewFromData(int argc, char** argv);
 extern UINT32 Fire(int argc, char** argv);
 extern UINT32 Grobal_Average_pooling(int argc, char** argv);
+extern UINT32 Max_value(int argc, char** argv);
+extern UINT32 Max_value(int argc, char** argv);
 
 #endif //SHELL_FUNCTION_H

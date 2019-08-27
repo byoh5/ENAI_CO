@@ -450,3 +450,45 @@ void global_average_pooling_rapper(char* input_file, int input_height, int input
 	if (output_data)	free(output_data);
 
 }
+
+void max_val(char* input_file, int input)
+{
+	int* input_data = (int*)malloc(sizeof(int)*(input));
+	if (input_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data(input_file, input_data);
+
+	int max = 0;
+	int maxidx = 0;
+
+	for (int i = 0; i<input; i++){
+		if (*(input_data+i) > max){
+			max = *(input_data+i);
+			maxidx = i;
+		}
+	}
+
+	printf("Max is %d\n", maxidx);
+
+	if (input_data)	free(input_data);
+}
+
+
+void layer_dump(int *data,int size,char* outfile)
+{
+	FILE *fp = NULL;
+	if ((fp = fopen(outfile, "w")) == NULL) {
+		printf("fopen fail\n");
+		return;
+	}
+
+	int* pdata = data;
+	for (int i = 0; i < size; i++){
+		fprintf(fp, "%d\n", *pdata);
+		pdata++;
+	}
+	fclose(fp);
+
+}

@@ -130,20 +130,35 @@ UINT32 dataResize(int argc, char** argv){
 	FILE *fp = NULL;
 	fp = fopen(argv[4], "w");
 
-	for (int i = 0; i < size_h * size_w; i++){
-	//	printf("R %d\n", ch_bgr[2].data[i]);
-		fprintf(fp, "%d\n", ch_bgr[2].data[i]);
-	}
+	int ch = atoi(argv[5]);
 
-	for (int i = 0; i < size_h * size_w; i++){
-	//	printf("G %d\n", ch_bgr[1].data[i]);
-		fprintf(fp, "%d\n", ch_bgr[1].data[i]);
-	}
+	if (ch == 3){
 
-	for (int i = 0; i < size_h * size_w; i++){
-	//	printf("B %d\n", ch_bgr[0].data[i]);
-		fprintf(fp, "%d\n", ch_bgr[0].data[i]);
+		for (int i = 0; i < size_h * size_w; i++){
+			//	printf("R %d\n", ch_bgr[2].data[i]);
+			fprintf(fp, "%d\n", ch_bgr[2].data[i]);
+		}
+
+		for (int i = 0; i < size_h * size_w; i++){
+			//	printf("G %d\n", ch_bgr[1].data[i]);
+			fprintf(fp, "%d\n", ch_bgr[1].data[i]);
+		}
+
+		for (int i = 0; i < size_h * size_w; i++){
+			//	printf("B %d\n", ch_bgr[0].data[i]);
+			fprintf(fp, "%d\n", ch_bgr[0].data[i]);
+		}
+	}else if(ch == 1){
+		for (int i = 0; i < size_h * size_w; i++){
+			//	printf("R %d\n", ch_bgr[2].data[i]);
+			fprintf(fp, "%d\n", ch_bgr[2].data[i]);
+		}
 	}
+	else{
+		printf("Channel error\n");
+	}
+	
+
 	fclose(fp);
 	namedWindow("Resize  window", WINDOW_AUTOSIZE); // Create a window for display.
 	imshow("Resize  window", res_image);

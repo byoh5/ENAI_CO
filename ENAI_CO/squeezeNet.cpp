@@ -181,6 +181,7 @@ void init_squeezeNet_buf(void){
 	//convolution layer 1 + ReLU
 	//******************************************************************************
 	standard_convolution_int(input_data, 227, 227, 1, conv1, 7, 7, 64, SQZ_buf1, 111, 111, 2, 0);
+	layer_dump(SQZ_buf1, 111*111*64,"inout_comp/001_conv1_out.txt");
 	ReLU_int(SQZ_buf1, 111, 111, 64);
 
 	//******************************************************************************
