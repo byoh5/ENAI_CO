@@ -7,6 +7,8 @@
 #include "float2int_conv.h"
 #include "image_cv.h"
 #include "layer.h"
+#include "fixedpoint.h"
+#include "shell_function.h"
 
 #include <fstream>
 #include <iostream>
@@ -15,45 +17,72 @@ using namespace std;
 #pragma comment (lib, "Ws2_32.lib")
 #pragma warning(disable:4996)
 
- const char* sHelpDisp[] = { "Shell command list (! : Repeat command)", (char*)0 };
- const char* sSqueeze[] = { "Squeeze", (char*)0 };
- const char* sWeightAnalyer[] = { "WeightAnalyer", (char*)0 };
- const char* sQuantization[] = { "Quantization", (char*)0 };
- const char* sfloat2int_conv[] = { "float 2 int ", (char*)0 };
- const char* sfloat2int_double[] = { "float 2 int double", (char*)0 };
- const char* sScript[] = { "Script", (char*)0 };
- const char* sImgView[] = { "img ", (char*)0 };
- const char* sResize[] = { "resize ", (char*)0 };
- const char* sConvolution[] = { "convolution ", (char*)0 };
- const char* sConcatenate[] = { "concatenate ", (char*)0 };
- const char* sRelu[]		= { "relu ", (char*)0 };
- const char* sMaxpooling[] = { "Maxpooling ", (char*)0 };
- const char* simgVfd[] = { "Image view from data ", (char*)0 };
- const char* sFire[] = { "Fire ", (char*)0 };
- const char* sGrobalAveragePooling[] = { "GrobalAveragePooling ", (char*)0 };
- const char* sMaxvalue[] = { "Maxvalue ", (char*)0 };
 
- tMonCmd gCmdList[] =
- {
-	 { (char*) "?", HelpDisp, sHelpDisp },
-	 { (char*) "sqz", Squeeze, sSqueeze },
-	 { (char*) "wa", WeightAnalyzer, sWeightAnalyer },
-	 { (char*) "qunt", Quantization, sQuantization },
-	 { (char*) "f2ic", Float2int_converter, sfloat2int_conv },
-	 { (char*) "f2id", Float2int_converter_double, sfloat2int_double },
-	 { (char*) "run", RunScript, sScript },
-	 { (char*) "img", Image_view, sImgView },
-	 { (char*) "resize", Image_resize, sResize },
-	 { (char*) "conv", Convolution, sConvolution },
-	 { (char*) "conc", Concatenate, sConcatenate },
-	 { (char*) "relu", Relu, sRelu },
-	 { (char*) "maxp", MaxPooling, sMaxpooling },
-	 { (char*) "imfd", Image_viewFromData, simgVfd },
-	 { (char*) "fire", Fire, sFire },
-	 { (char*) "gavp", Grobal_Average_pooling, sGrobalAveragePooling },
-	 { (char*) "maxv", Max_value, sMaxvalue },
-	 { 0, 0, 0 }
- };
+const char* sHelpDisp[] = { "Shell command list (! : Repeat command)", (char*)0 };
+const char* sSqueeze[] = { "Squeeze", (char*)0 };
+const char* sWeightAnalyer[] = { "WeightAnalyer", (char*)0 };
+const char* sQuantization[] = { "Quantization", (char*)0 };
+const char* sfloat2int_conv[] = { "float 2 int ", (char*)0 };
+const char* sfloat2int_double[] = { "float 2 int double", (char*)0 };
+const char* sScript[] = { "Script", (char*)0 };
+const char* sImgView[] = { "img ", (char*)0 };
+const char* sResize[] = { "resize ", (char*)0 };
+const char* sConvolution[] = { "convolution ", (char*)0 };
+const char* sConcatenate[] = { "concatenate ", (char*)0 };
+const char* sRelu[] = { "relu ", (char*)0 };
+const char* sMaxpooling[] = { "Maxpooling ", (char*)0 };
+const char* simgVfd[] = { "Image view from data ", (char*)0 };
+const char* sFire[] = { "Fire ", (char*)0 };
+const char* sGlobalAveragePooling[] = { "GrobalAveragePooling ", (char*)0 };
+const char* sMaxvalue[] = { "Maxvalue ", (char*)0 };
+const char* sDepthwiseconv[] = { "depthwise convolution ", (char*)0 };
+const char* sFloat2Fixedpoint[] = { "Float to Fixedpoint convertion", (char*)0 };
+const char* sFixedMul[] = { "Fixed multipiler", (char*)0 };
+const char* sShift[] = { "Shift", (char*)0 };
+
+const char* sFloat[] = { "This is float function", (char*)0 };
+
+tMonCmd gCmdList[] =
+{
+	{ (char*) "?", HelpDisp, sHelpDisp },
+	{ (char*) "sqz", Squeeze, sSqueeze },
+	{ (char*) "wa", WeightAnalyzer, sWeightAnalyer },
+	{ (char*) "qunt", Quantization, sQuantization },
+	{ (char*) "f2ic", Float2int_converter, sfloat2int_conv },
+	{ (char*) "f2id", Float2int_converter_double, sfloat2int_double },
+	{ (char*) "run", RunScript, sScript },
+	{ (char*) "img", Image_view, sImgView },
+	{ (char*) "resize", Image_resize, sResize },
+	{ (char*) "conv", Convolution, sConvolution },
+	{ (char*) "conc", Concatenate, sConcatenate },
+	{ (char*) "relu", Relu, sRelu },
+	{ (char*) "maxp", MaxPooling, sMaxpooling },
+	{ (char*) "imfd", Image_viewFromData, simgVfd },
+	{ (char*) "fire", Fire, sFire },
+	{ (char*) "gavp", Global_Average_pooling, sGlobalAveragePooling },
+	{ (char*) "maxv", Max_value, sMaxvalue },
+	{ (char*) "dwcv", DepthwiseConvolution, sDepthwiseconv },
+	{ (char*) "2fix", Float2Fixedpoint, sFloat2Fixedpoint },
+	{ (char*) "fixm", Fixed_mul, sFixedMul },
+	{ (char*) "f2fc", Float2Fixed_converter, sFloat2Fixedpoint },
+	{ (char*) "shif", Shift, sShift },
+
+	{ (char*) "conv_f", Convolution_float, sFloat },
+	{ (char*) "dwcv_f", DepthwiseConvolution_float, sFloat },
+	{ (char*) "conc_f", Concatenate_float, sFloat },
+	{ (char*) "relu_f", Relu_float, sFloat },
+	{ (char*) "maxp_f", MaxPooling_float, sFloat },
+	{ (char*) "gavp_f", Global_Average_pooling_float, sFloat },
+	{ (char*) "maxv_f", Max_value_float, sFloat },
+	{ (char*) "bcnm_f", Batch_normalize_float, sFloat },
+	{ (char*) "scbi_f", Scale_bias_float, sFloat },
+	{ (char*) "bias_f", Bias_float, sFloat },
+
+
+	{ 0, 0, 0 }
+};
+
+//extern tMonCmd gCmdList[];
 
 UINT32 HelpDisp(int argc, char** argv)
 {
@@ -201,6 +230,19 @@ UINT32 Quantization(int argc, char** argv)
 	return 0;
 }
 
+
+UINT32 Shift(int argc, char** argv)
+{
+	if (argc != 4){
+		printf("ex) shif in-filename out-filename shift \n");
+		//                    1          2          3
+		return -1;
+	}
+	int shift = atoi(argv[3]);
+	Shift_rapper(argv[1], argv[2], shift);
+	return 0;
+}
+
 UINT32 Float2int_converter(int argc, char** argv)
 {
 	if (argc != 3){
@@ -209,6 +251,19 @@ UINT32 Float2int_converter(int argc, char** argv)
 		return -1;
 	}
 	quantization_float2INT8_rapper(argv[1], argv[2]);
+	return 0;
+}
+
+UINT32 Float2Fixed_converter(int argc, char** argv)
+{
+	if (argc != 4){
+		printf("ex) f2fc in-filename out-filename fb \n");
+		//                    1          2         3 
+		return -1;
+	}
+	int fb = atoi(argv[3]);
+
+	quantization_float2fixed_rapper(argv[1], argv[2], fb);
 	return 0;
 }
 
@@ -291,6 +346,34 @@ UINT32 Convolution(int argc, char** argv)
 	
 	return 0;
 }
+
+UINT32 DepthwiseConvolution(int argc, char** argv)
+{
+	if (argc != 14){
+		printf("ex)dwcv in-filename in-H in-W in-ch kernel-filename k-H k-W k-ch out-filename o-H o-W stride padding \n");
+		//                   1        2    3    4         5          6    7   8       9        10  11   12      13 
+		return -1;
+	}
+	int in_H = atoi(argv[2]);
+	int in_W = atoi(argv[3]);
+	int in_ch = atoi(argv[4]);
+
+	int k_H = atoi(argv[6]);
+	int k_W = atoi(argv[7]);
+	int k_ch = atoi(argv[8]);
+
+	int o_H = atoi(argv[10]);
+	int o_W = atoi(argv[11]);
+
+	int stride = atoi(argv[12]);
+	int padding = atoi(argv[13]);
+
+
+	depthwise_convolution_int_rapper(argv[1], in_H, in_W, in_ch, argv[5], k_H, k_W, k_ch, argv[9], o_H, o_W, stride, padding);
+
+	return 0;
+}
+
 
 UINT32 Concatenate(int argc, char** argv)
 {
@@ -414,7 +497,7 @@ UINT32 Fire(int argc, char** argv)
 }
 
 
-UINT32 Grobal_Average_pooling(int argc, char** argv)
+UINT32 Global_Average_pooling(int argc, char** argv)
 {
 	if (argc != 6){
 		printf("ex)gavp in-filename in-H in-W in-ch out-file\n");
@@ -441,6 +524,61 @@ UINT32 Max_value(int argc, char** argv)
 	
 
 	max_val(argv[1], size);
+
+	return 0;
+}
+
+
+
+UINT32 Float2Fixedpoint(int argc, char** argv)
+{
+	if (argc != 3){
+		printf("ex)2fix float fb \n");
+		//                1   2             
+		return -1;
+	}
+	float f = atof(argv[1]);
+	int fb = atoi(argv[2]);
+
+	int num = float_to_fixed(f, fb);
+
+	printf("%08x\n", num);
+	printf("%f\n", fixed_to_float(num, fb));
+	printf("%f\n", fixed_to_float(num, fb) - f);
+
+	return 0;
+}
+
+int iwlbit(float floats) {
+	
+	int iwl = 0;
+	int n = floats;
+	if (n < 0) n *= (-1);
+	if (n) iwl = log2((double)n) + 1;
+	return iwl;
+}
+
+
+UINT32 Fixed_mul(int argc, char** argv)
+{
+	if (argc != 4){
+		printf("ex)fixm float float fb \n");
+		//                1    2     3           
+		return -1;
+	}
+
+	float f1 = atof(argv[1]);
+	float f2 = atof(argv[2]);
+	int fb = atoi(argv[3]);
+	
+	int	i1 = float_to_fixed(f1, fb);
+	int i2 = float_to_fixed(f2, fb);
+
+	int ret = (i1 * i2)>>fb;
+
+	float ret_f = fixed_to_float(ret, fb);
+
+	printf("fixed :%f origin:%f\n", ret_f, (float)(f1 * f2));
 
 	return 0;
 }

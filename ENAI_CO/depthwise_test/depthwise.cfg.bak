@@ -1,0 +1,1 @@
+dwcv depthwise/input.txt 11 11 3 depthwise/kernel.txt 3 3 3 depthwise/out.txt 11 11 1 1 

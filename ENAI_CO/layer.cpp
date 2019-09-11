@@ -71,6 +71,36 @@ void standard_convolution_int(int *input_data, int input_height, int input_width
 	}
 }
 
+void depthwise_convolution_int(int *input_data, int input_height, int input_width, int input_ch, int *kernel_data, int kernel_height, int kernel_width, int kernel_ch,
+	int *output_data, int output_height, int output_width, int stride, int padding){
+
+	int *input_buf, *kernel_buf, *output_buf;
+	int i, j;
+
+	if (input_ch != kernel_ch){
+		printf("Error depthwise input_ch != kernel_ch\n");
+	}
+
+	for (i = 0; i < input_ch; i++){
+	//	for (j = 0; j < kernel_ch; j++){
+			input_buf = input_data + (i*input_height*input_width);
+			kernel_buf = kernel_data + (i*kernel_height*kernel_width);
+			output_buf = output_data + (i*output_height*output_width);
+
+			if (input_buf > input_data + (input_height * input_width * input_ch)) {
+				printf("Error input_buf %x > %x\n", input_buf, input_data + (input_height * input_width * input_ch));
+			}
+			if (kernel_buf > kernel_data + (kernel_height * kernel_width * input_ch)) {
+				printf("Error kernel_buf %x > %x\n", kernel_buf, kernel_data + (kernel_height * kernel_width * input_ch));
+			}
+			if (output_buf > output_data + (output_height * output_width * input_ch)) {
+				printf("Error output_buf %x > %x\n", output_buf, output_data + (output_height * output_width * input_ch));
+			}
+			new_conv_int(input_buf, input_height, input_width, kernel_buf, kernel_height, kernel_width, output_buf, output_height, output_width, stride, padding);
+	//	}
+	}
+}
+
 void ReLU_int(int *input_data, int input_height, int input_width, int input_ch){
 	int i;
 	int all_mul = input_height * input_width * input_ch;
@@ -294,6 +324,66 @@ void standard_convolution_int_rapper(char *input_file, int input_height, int inp
 
 }
 
+
+void depthwise_convolution_int_rapper(char *input_file, int input_height, int input_width, int input_ch, char *kernel_file, int kernel_height, int kernel_width, int kernel_ch,
+	char *output_file, int output_height, int output_width, int stride, int padding){
+
+	if (input_ch != kernel_ch){
+		printf("Error depthwise input_ch != kernel_ch\n");
+		return;
+	}
+
+	int* input_data = (int*)malloc(sizeof(int)*(input_height * input_width * input_ch));
+	if (input_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data(input_file, input_data);
+
+	int* kernel_data = (int*)malloc(sizeof(int)*(kernel_height * kernel_width * input_ch));
+	if (kernel_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data(kernel_file, kernel_data);
+
+	int* output_data = (int*)malloc(sizeof(int)*(output_height * output_width * input_ch));
+	if (output_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	if (output_data != NULL)memset(output_data, 0, sizeof(int)*(output_height * output_width * input_ch));
+
+#define OUTDATA_CHECKER_CONV
+#ifdef OUTDATA_CHECKER_CONV
+	for (int i = 0; i < output_height*output_width*input_ch; i++){
+		if (output_data[i] != 0){
+			printf("Output data init value is not zero!\n");
+		}
+	}
+#endif
+	depthwise_convolution_int(input_data, input_height, input_width, input_ch, kernel_data, kernel_height, kernel_width, kernel_ch, output_data, output_height, output_width, stride, padding);
+
+
+	int* pOutput_data = output_data;
+	FILE *fp = NULL;
+	fp = fopen(output_file, "w");
+	if (fp != NULL){
+		for (int i = 0; i < output_height * output_width*kernel_ch; i++){
+			//	printf("%d\n", output_data[i]);
+			fprintf(fp, "%d\n", *pOutput_data);
+			pOutput_data++;
+		}
+		fclose(fp);
+	}
+	else{
+		printf("fopen fail!\n");
+	}
+	if (input_data)		free(input_data);
+	if (kernel_data)	free(kernel_data);
+	if (output_data)	free(output_data);
+
+}
 
 void relu_rapper(char* input_file, int input_height, int input_width, int input_ch, char* output_file)
 {

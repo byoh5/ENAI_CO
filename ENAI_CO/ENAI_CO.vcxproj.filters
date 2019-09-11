@@ -51,6 +51,12 @@
     <ClInclude Include="image_cv.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="fixedpoint.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ieee754.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -84,6 +90,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="image_cv.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="fixedpoint.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="shell_function_float.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

@@ -27,5 +27,8 @@ extern void global_average_pooling_rapper(char* input_file, int input_height, in
 extern void max_val(char* input_file, int input);
 
 extern void layer_dump(int *data, int size, char* outfile);
+extern void depthwise_convolution_int_rapper(char *input_file, int input_height, int input_width, int input_ch, char *kernel_file, int kernel_height, int kernel_width, int kernel_ch,
+	char *output_file, int output_height, int output_width, int stride, int padding);
+
 
 #endif  //LAYER

@@ -202,7 +202,12 @@ void Convert_shift(char* input_name, char* output_name, int shiftnum) {
 			pStr = fgets(buffer, sizeof(buffer), fp);
 			if (pStr != NULL){
 				num2 = atoi(pStr);
-				fprintf(fp1, "%d\n", num2 >> shiftnum);
+				if (shiftnum > 0){
+					fprintf(fp1, "%d\n", num2 << abs(shiftnum));
+				}
+				else{
+					fprintf(fp1, "%d\n", num2 >> abs(shiftnum));
+				}
 			}
 		
 		}
@@ -226,6 +231,10 @@ void quantization_INT8_rapper(char* input_name, char* output_name,int shift)
 #endif
 }
 
+void Shift_rapper(char* input_name, char* output_name, int shift)
+{
+	Convert_shift(input_name, output_name, shift);
+}
 
 void quantization_float2INT8_rapper(char* input_name, char* output_name)
 {
