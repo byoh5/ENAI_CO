@@ -25,5 +25,5 @@ int optiwl(float floats[], int len);
 extern int float_to_fixed(float input, int fractionbit);
 extern float fixed_to_float(int input, int fractionbit);
 extern void quantization_float2fixed_rapper(char* input_name, char* output_name, int fb);
-
+extern void quantization_fixed2float_rapper(char* input_name, char* output_name, int fb);
 #endif

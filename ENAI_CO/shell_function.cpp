@@ -41,6 +41,7 @@ const char* sFixedMul[] = { "Fixed multipiler", (char*)0 };
 const char* sShift[] = { "Shift", (char*)0 };
 
 const char* sFloat[] = { "This is float function", (char*)0 };
+const char* sInt[] = { "This is int function", (char*)0 };
 
 tMonCmd gCmdList[] =
 {
@@ -53,19 +54,29 @@ tMonCmd gCmdList[] =
 	{ (char*) "run", RunScript, sScript },
 	{ (char*) "img", Image_view, sImgView },
 	{ (char*) "resize", Image_resize, sResize },
-	{ (char*) "conv", Convolution, sConvolution },
-	{ (char*) "conc", Concatenate, sConcatenate },
-	{ (char*) "relu", Relu, sRelu },
-	{ (char*) "maxp", MaxPooling, sMaxpooling },
+	
 	{ (char*) "imfd", Image_viewFromData, simgVfd },
 	{ (char*) "fire", Fire, sFire },
-	{ (char*) "gavp", Global_Average_pooling, sGlobalAveragePooling },
-	{ (char*) "maxv", Max_value, sMaxvalue },
-	{ (char*) "dwcv", DepthwiseConvolution, sDepthwiseconv },
+
 	{ (char*) "2fix", Float2Fixedpoint, sFloat2Fixedpoint },
 	{ (char*) "fixm", Fixed_mul, sFixedMul },
 	{ (char*) "f2fc", Float2Fixed_converter, sFloat2Fixedpoint },
+	{ (char*) "fx2f", Fixed2Float_converter, sFloat2Fixedpoint },
 	{ (char*) "shif", Shift, sShift },
+
+	{ (char*) "conv", Convolution, sConvolution },
+	{ (char*) "dwcv", DepthwiseConvolution, sDepthwiseconv },
+	{ (char*) "conc", Concatenate, sConcatenate },
+	{ (char*) "relu", Relu, sRelu },
+	{ (char*) "maxp", MaxPooling, sMaxpooling },
+	{ (char*) "gavp", Global_Average_pooling, sGlobalAveragePooling },
+	{ (char*) "maxv", Max_value, sMaxvalue },
+	{ (char*) "bcnm", Batch_normalize, sInt },
+	{ (char*) "scbi", Scale_bias, sInt },
+	{ (char*) "bias", Bias, sInt },
+	{ (char*) "fulc", Fully_connected, sInt },
+	{ (char*) "scon", Scale_only, sInt },
+
 
 	{ (char*) "conv_f", Convolution_float, sFloat },
 	{ (char*) "dwcv_f", DepthwiseConvolution_float, sFloat },
@@ -267,6 +278,20 @@ UINT32 Float2Fixed_converter(int argc, char** argv)
 	quantization_float2fixed_rapper(argv[1], argv[2], fb);
 	return 0;
 }
+
+UINT32 Fixed2Float_converter(int argc, char** argv)
+{
+	if (argc != 4){
+		printf("ex) fx2f in-filename out-filename fb \n");
+		//                    1          2         3 
+		return -1;
+	}
+	int fb = atoi(argv[3]);
+
+	quantization_fixed2float_rapper(argv[1], argv[2], fb);
+	return 0;
+}
+
 
 UINT32 Float2int_converter_double(int argc, char** argv)
 {
@@ -580,6 +605,89 @@ UINT32 Fixed_mul(int argc, char** argv)
 	float ret_f = fixed_to_float(ret, fb);
 
 	printf("fixed :%f origin:%f\n", ret_f, (float)(f1 * f2));
+
+	return 0;
+}
+
+UINT32 Batch_normalize(int argc, char** argv)
+{
+	if (argc != 9){
+		printf("ex)bcnm in-filename in-H in-W in-ch k-file1 k-file1 k-file1 out-filename \n");
+		//                     1        2    3    4      5       6      7          8        
+		return -1;
+	}
+	int in_H = atoi(argv[2]);
+	int in_W = atoi(argv[3]);
+	int in_ch = atoi(argv[4]);
+
+	batch_normalize_rapper(argv[1], in_H, in_W, in_ch, argv[5], argv[6], argv[7], argv[8]);
+
+	return 0;
+}
+
+UINT32 Scale_bias(int argc, char** argv)
+{
+	if (argc != 8){
+		printf("ex)scbi in-filename in-H in-W in-ch k-file1 k-file1 out-filename \n");
+		//                     1        2    3    4      5       6          7                  
+		return -1;
+	}
+	int in_H = atoi(argv[2]);
+	int in_W = atoi(argv[3]);
+	int in_ch = atoi(argv[4]);
+
+	scale_bias_rapper(argv[1], in_H, in_W, in_ch, argv[5], argv[6], argv[7]);
+
+	return 0;
+}
+
+UINT32 Bias(int argc, char** argv)
+{
+	if (argc != 7){
+		printf("ex)bias in-filename in-H in-W in-ch k-file1 out-filename \n");
+		//                     1        2    3    4      5       6                            
+		return -1;
+	}
+	int in_H = atoi(argv[2]);
+	int in_W = atoi(argv[3]);
+	int in_ch = atoi(argv[4]);
+
+	bias_rapper(argv[1], in_H, in_W, in_ch, argv[5], argv[6]);
+
+	return 0;
+}
+
+UINT32 Scale_only(int argc, char** argv)
+{
+	if (argc != 7){
+		printf("ex)scon in-filename in-H in-W in-ch scale out-filename \n");
+		//                     1        2    3    4      5         6                             
+		return -1;
+	}
+	int in_H = atoi(argv[2]);
+	int in_W = atoi(argv[3]);
+	int in_ch = atoi(argv[4]);
+	int scale = atof(argv[5]);
+
+	scale_only_rapper(argv[1], in_H, in_W, in_ch, scale, argv[6]);
+
+	return 0;
+}
+
+UINT32 Fully_connected(int argc, char** argv)
+{
+	if (argc != 6){
+		printf("ex)fulc in-filename in-ch kernel-filename k-ch out-filename  \n");
+		//                   1         2          3           4         5          
+		return -1;
+	}
+
+	int in_ch = atoi(argv[2]);
+
+
+	int k_ch = atoi(argv[4]);
+
+	fully_connected_rapper(argv[1], in_ch, argv[3], k_ch, argv[5]);
 
 	return 0;
 }

@@ -1,5 +1,6 @@
 #include "fixedpoint.h"
 #include "ieee754.h"
+#include "stdafx.h"
 
 #pragma comment (lib, "Ws2_32.lib")
 #pragma warning(disable:4996)
@@ -135,4 +136,48 @@ void Convert_Float2Fixed(char *input_name, char *output_name, int fb){
 void quantization_float2fixed_rapper(char* input_name, char* output_name, int fb)
 {
 	Convert_Float2Fixed(input_name, output_name,fb);
+}
+
+void Convert_Fixed2Float(char *input_name, char *output_name, int fb){
+
+	FILE *fp;
+	FILE *fp1;
+
+	if ((fp = fopen(input_name, "r")) == NULL){
+		printf("fopen fail! \n");
+		return;
+	}
+
+	if ((fp1 = fopen(output_name, "w")) == NULL) {
+		printf("fopen fail! \n");
+		return;
+	}
+
+	if (fp != NULL)
+	{
+		char buffer[20] = { 0, };
+		char s1[20] = { 0, };
+		char *pStr;
+		int int_num;
+		float num2;
+
+		while (!feof(fp)){
+			pStr = fgets(buffer, sizeof(buffer), fp);
+			if (pStr != NULL){
+				int_num = atoi(pStr);
+				num2 = fixed_to_float(int_num, fb);
+				sprintf(s1, "%f", num2);
+				fprintf(fp1, "%s\n", s1);
+			}
+			else break;
+		}
+	}
+
+	fclose(fp);
+	fclose(fp1);
+}
+
+void quantization_fixed2float_rapper(char* input_name, char* output_name, int fb)
+{
+	Convert_Fixed2Float(input_name, output_name, fb);
 }

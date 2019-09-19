@@ -2,9 +2,23 @@
 #include <windows.h>
 #include "shell.h"
 #include <iostream>
+#include "fixedpoint.h"
 
 #pragma comment (lib, "Ws2_32.lib")
 #pragma warning(disable:4996)
+
+
+#define FRICTIONBIT 15
+
+int mul_fix(int a, int b, int fb) {
+	int c = a * b;
+	return c >> fb;
+}
+
+int div_fix(int a, int b, int fb) {
+	int c = a << fb;
+	return c / b;
+}
 
 
 void new_conv_int(int *input_data, int input_height, int input_width, int *kernel_data, int kernel_height, int kernel_weight,
@@ -31,7 +45,8 @@ void new_conv_int(int *input_data, int input_height, int input_width, int *kerne
 					if ((num1 >= padding) && (num1 < padding1_h) && (num2 >= padding) && (num2 < padding1_w)){
 						int num3 = num1 - padding;
 						int num4 = num2 - padding;
-						p_sum = kernel_data[kernel_weight*i + j] * input_data[input_width * num3 + num4];
+					//	p_sum = kernel_data[kernel_weight*i + j] * input_data[input_width * num3 + num4];
+						p_sum = mul_fix(kernel_data[kernel_weight*i + j], input_data[input_width * num3 + num4], FRICTIONBIT);
 						sum = sum + p_sum;
 					}
 				}
@@ -152,7 +167,7 @@ void global_average_pooling_int(int *input_data, int input_height, int input_wid
 		for (i = 0; i < mul_in; i++){
 			sum = sum + input_data_buf[i];
 		}
-		out_data[s] = sum;
+		out_data[s] = sum / mul_in;
 		//printf("%f\n", s, sum / (13 * 13));
 		sum = 0;
 		s++;
@@ -618,5 +633,362 @@ void layer_dump(int *data,int size,char* outfile)
 		pdata++;
 	}
 	fclose(fp);
+
+}
+
+void batch_normalize(int *input_data, int input_height, int input_width, int input_ch, int *kernel_data_1, int *kernel_data_2, int *kernel_data_3, int *output_data){
+
+	int *input_buf, *kernel_1_buf, *kernel_2_buf, *kernel_3_buf, *output_buf;
+	int i, j;
+
+	int mean = 0;
+	int var = 0;
+	int scalef = 0;
+
+	for (i = 0; i < input_ch; i++){
+		input_buf = input_data + (i*input_height*input_width);
+		kernel_1_buf = kernel_data_1 + i;
+		kernel_2_buf = kernel_data_2 + i;
+		kernel_3_buf = kernel_data_3;
+		output_buf = output_data + (i*input_height*input_width);
+
+
+		mean = *kernel_1_buf;
+		var = *kernel_2_buf;
+		scalef = *kernel_3_buf;
+	//	mean = mean / scalef;
+		mean =div_fix(mean, scalef, FRICTIONBIT);
+		//	var = var / scalef;
+		var = div_fix(var, scalef, FRICTIONBIT);
+
+		float var_f = fixed_to_float(var, FRICTIONBIT);
+		float div_f = sqrt(var_f + .000001f);
+		int   div_int = float_to_fixed(div_f, FRICTIONBIT);
+
+
+		for (j = 0; j < input_height*input_width; j++){
+		//	*(output_buf + j) = (*(input_buf + j) - mean) / div_int;
+
+			*(output_buf + j) = div_fix((*(input_buf + j) - mean), div_int, FRICTIONBIT);
+
+		}
+	}
+}
+
+void batch_normalize_rapper(char *input_file, int input_height, int input_width, int input_ch, char *kernel_1_file, char *kernel_2_file, char *kernel_3_file, char *output_file){
+
+
+	int* input_data = (int*)malloc(sizeof(int)*(input_height * input_width * input_ch));
+	if (input_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data(input_file, input_data);
+
+	int* kernel_data_1 = (int*)malloc(sizeof(int)*(input_ch));
+	if (kernel_data_1 == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data(kernel_1_file, kernel_data_1);
+
+	int* kernel_data_2 = (int*)malloc(sizeof(int)*(input_ch));
+	if (kernel_data_2 == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data(kernel_2_file, kernel_data_2);
+
+	int* kernel_data_3 = (int*)malloc(sizeof(int));
+	if (kernel_data_3 == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data(kernel_3_file, kernel_data_3);
+
+
+	int* output_data = (int*)malloc(sizeof(int)*(input_height * input_width * input_ch));
+	if (output_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	if (output_data != NULL)memset(output_data, 0, sizeof(int)*(input_height * input_width * input_ch));
+
+
+	batch_normalize(input_data, input_height, input_width, input_ch, kernel_data_1, kernel_data_2, kernel_data_3, output_data);
+
+	int* pOutput_data = output_data;
+	FILE *fp = NULL;
+	fp = fopen(output_file, "w");
+	if (fp != NULL){
+		for (int i = 0; i < input_height * input_width * input_ch; i++){
+			//	printf("%d\n", output_data[i]);
+			fprintf(fp, "%d\n", *pOutput_data);
+			pOutput_data++;
+		}
+		fclose(fp);
+	}
+	else{
+		printf("fopen fail!\n");
+	}
+	if (input_data)		free(input_data);
+	if (kernel_data_1)	free(kernel_data_1);
+	if (kernel_data_2)	free(kernel_data_2);
+	if (kernel_data_3)	free(kernel_data_3);
+	if (output_data)	free(output_data);
+
+}
+
+
+void scale_bias(int *input_data, int input_height, int input_width, int input_ch, int *kernel_data_1, int *kernel_data_2, int *output_data){
+
+	int *input_buf, *kernel_1_buf, *kernel_2_buf, *output_buf;
+	int i, j;
+
+	int scale = 0, shift = 0;
+
+	for (i = 0; i < input_ch; i++){
+		input_buf = input_data + (i*input_height*input_width);
+		kernel_1_buf = kernel_data_1 + i;
+		kernel_2_buf = kernel_data_2 + i;
+		//kernel_3_buf = kernel_data_3;
+		output_buf = output_data + (i*input_height*input_width);
+
+		scale = *kernel_1_buf;
+		shift = *kernel_2_buf;
+
+		for (j = 0; j < input_height*input_width; j++){
+		//	*(output_buf + j) = (*(input_buf + j)*scale) + shift;
+			*(output_buf + j) = mul_fix(*(input_buf + j), scale, FRICTIONBIT) + shift;
+		}
+	}
+}
+
+void scale_bias_rapper(char *input_file, int input_height, int input_width, int input_ch, char *kernel_1_file, char *kernel_2_file, char *output_file){
+
+
+	int* input_data = (int*)malloc(sizeof(int)*(input_height * input_width * input_ch));
+	if (input_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data(input_file, input_data);
+
+	int* kernel_data_1 = (int*)malloc(sizeof(int)*(input_ch));
+	if (kernel_data_1 == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data(kernel_1_file, kernel_data_1);
+
+	int* kernel_data_2 = (int*)malloc(sizeof(int)*(input_ch));
+	if (kernel_data_2 == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data(kernel_2_file, kernel_data_2);
+
+
+	int* output_data = (int*)malloc(sizeof(int)*(input_height * input_width * input_ch));
+	if (output_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	if (output_data != NULL)memset(output_data, 0, sizeof(int)*(input_height * input_width * input_ch));
+
+
+	scale_bias(input_data, input_height, input_width, input_ch, kernel_data_1, kernel_data_2, output_data);
+
+	int* pOutput_data = output_data;
+	FILE *fp = NULL;
+	fp = fopen(output_file, "w");
+	if (fp != NULL){
+		for (int i = 0; i < input_height * input_width * input_ch; i++){
+			//	printf("%d\n", output_data[i]);
+			fprintf(fp, "%d\n", *pOutput_data);
+			pOutput_data++;
+		}
+		fclose(fp);
+	}
+	else{
+		printf("fopen fail!\n");
+	}
+	if (input_data)		free(input_data);
+	if (kernel_data_1)	free(kernel_data_1);
+	if (kernel_data_2)	free(kernel_data_2);
+	if (output_data)	free(output_data);
+
+}
+
+void bias(int *input_data, int input_height, int input_width, int input_ch, int *kernel_data_1, int *output_data){
+
+	int *input_buf, *kernel_1_buf, *output_buf;
+	int i, j;
+
+	int bias = 0;
+
+	for (i = 0; i < input_ch; i++){
+		input_buf = input_data + (i*input_height*input_width);
+		kernel_1_buf = kernel_data_1 + i;
+		output_buf = output_data + (i*input_height*input_width);
+
+		bias = *kernel_1_buf;
+
+		for (j = 0; j < input_height*input_width; j++){
+			*(output_buf + j) = *(input_buf + j) + bias;
+		}
+	}
+}
+
+
+void bias_rapper(char *input_file, int input_height, int input_width, int input_ch, char *kernel_1_file, char *output_file){
+
+
+	int* input_data = (int*)malloc(sizeof(int)*(input_height * input_width * input_ch));
+	if (input_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data(input_file, input_data);
+
+	int* kernel_data_1 = (int*)malloc(sizeof(int)*(input_ch));
+	if (kernel_data_1 == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data(kernel_1_file, kernel_data_1);
+
+	int* output_data = (int*)malloc(sizeof(int)*(input_height * input_width * input_ch));
+	if (output_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	if (output_data != NULL)memset(output_data, 0, sizeof(int)*(input_height * input_width * input_ch));
+
+
+	bias(input_data, input_height, input_width, input_ch, kernel_data_1, output_data);
+
+	int* pOutput_data = output_data;
+	FILE *fp = NULL;
+	fp = fopen(output_file, "w");
+	if (fp != NULL){
+		for (int i = 0; i < input_height * input_width * input_ch; i++){
+			//	printf("%d\n", output_data[i]);
+			fprintf(fp, "%d\n", *pOutput_data);
+			pOutput_data++;
+		}
+		fclose(fp);
+	}
+	else{
+		printf("fopen fail!\n");
+	}
+	if (input_data)		free(input_data);
+	if (kernel_data_1)	free(kernel_data_1);
+	if (output_data)	free(output_data);
+
+}
+
+void scale_only(int *input_data, int input_height, int input_width, int input_ch, int scale, int *output_data){
+
+	int i;
+
+	for (i = 0; i < input_ch*input_height*input_width; i++){
+		//*(output_data + i) = *(input_data + i) * scale;
+		*(output_data + i) = mul_fix(*(input_data + i), scale, FRICTIONBIT);
+	}
+}
+
+void scale_only_rapper(char *input_file, int input_height, int input_width, int input_ch, int scale, char *output_file){
+
+
+	int* input_data = (int*)malloc(sizeof(int)*(input_height * input_width * input_ch));
+	if (input_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data(input_file, input_data);
+
+	int* output_data = (int*)malloc(sizeof(int)*(input_height * input_width * input_ch));
+	if (output_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	if (output_data != NULL)memset(output_data, 0, sizeof(int)*(input_height * input_width * input_ch));
+
+
+	scale_only(input_data, input_height, input_width, input_ch, scale, output_data);
+
+	int* pOutput_data = output_data;
+	FILE *fp = NULL;
+	fp = fopen(output_file, "w");
+	if (fp != NULL){
+		for (int i = 0; i < input_height * input_width * input_ch; i++){
+			//	printf("%f\n", *pOutput_data);
+			fprintf(fp, "%d\n", *pOutput_data);
+			pOutput_data++;
+		}
+		fclose(fp);
+	}
+	else{
+		printf("fopen fail!\n");
+	}
+	if (input_data)		free(input_data);
+	if (output_data)	free(output_data);
+
+}
+
+void fully_connected_rapper(char *input_file, int input_ch, char *kernel_file, int kernel_ch, char *output_file){
+
+
+
+	int* input_data = (int*)malloc(sizeof(int)*(input_ch));
+	if (input_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data(input_file, input_data);
+
+	int* kernel_data = (int*)malloc(sizeof(int)*(input_ch *kernel_ch));
+	if (kernel_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data(kernel_file, kernel_data);
+
+	int* output_data = (int*)malloc(sizeof(int)*(kernel_ch));
+	if (output_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	if (output_data != NULL)memset(output_data, 0, sizeof(int)*(kernel_ch));
+
+
+	
+	int i = 0, k = 0;
+	for (i = 0; i < kernel_ch; i++){
+		for (k = 0; k < input_ch; k++){
+
+		//	*(output_data + i) += *(input_data + k) * *(kernel_data + (i*input_ch) + k);
+			*(output_data + i) += mul_fix(*(input_data + k), *(kernel_data + (i*input_ch) + k), FRICTIONBIT);
+		}
+	}
+
+	int* pOutput_data = output_data;
+	FILE *fp = NULL;
+	fp = fopen(output_file, "w");
+	if (fp != NULL){
+		for (int i = 0; i < kernel_ch; i++){
+			//	printf("%d\n", output_data[i]);
+			fprintf(fp, "%d\n", *pOutput_data);
+			pOutput_data++;
+		}
+		fclose(fp);
+	}
+	else{
+		printf("fopen fail!\n");
+	}
+	if (input_data)		free(input_data);
+	if (kernel_data)	free(kernel_data);
+	if (output_data)	free(output_data);
 
 }

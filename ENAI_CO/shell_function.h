@@ -33,7 +33,7 @@ extern const char* sDepthwiseconv[];
 extern const char* sFloat2Fixedpoint[];
 extern const char* sFixedMul[];
 extern const char* sFloat[];
-
+extern const char* sInt[];
 
 extern tMonCmd gCmdList[];
 
@@ -60,7 +60,14 @@ extern UINT32 DepthwiseConvolution(int argc, char** argv);
 extern UINT32 Float2Fixedpoint(int argc, char** argv);
 extern UINT32 Fixed_mul(int argc, char** argv);
 extern UINT32 Float2Fixed_converter(int argc, char** argv);
+extern UINT32 Fixed2Float_converter(int argc, char** argv);
 extern UINT32 Shift(int argc, char** argv);
+extern UINT32 Batch_normalize(int argc, char** argv);
+extern UINT32 Scale_bias(int argc, char** argv);
+extern UINT32 Bias(int argc, char** argv);
+extern UINT32 Scale_only(int argc, char** argv);
+extern UINT32 Fully_connected(int argc, char** argv);
+
 
 //Float Function
 extern UINT32 Convolution_float(int argc, char** argv);

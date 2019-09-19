@@ -29,6 +29,12 @@ extern void max_val(char* input_file, int input);
 extern void layer_dump(int *data, int size, char* outfile);
 extern void depthwise_convolution_int_rapper(char *input_file, int input_height, int input_width, int input_ch, char *kernel_file, int kernel_height, int kernel_width, int kernel_ch,
 	char *output_file, int output_height, int output_width, int stride, int padding);
+extern void batch_normalize_rapper(char *input_file, int input_height, int input_width, int input_ch, char *kernel_1_file, char *kernel_2_file, char *kernel_3_file, char *output_file);
+extern void scale_bias_rapper(char *input_file, int input_height, int input_width, int input_ch, char *kernel_1_file, char *kernel_2_file, char *output_file);
+extern void bias_rapper(char *input_file, int input_height, int input_width, int input_ch, char *kernel_1_file, char *output_file);
+extern void fully_connected_rapper(char *input_file, int input_ch, char *kernel_file, int kernel_ch, char *output_file);
+extern void scale_only_rapper(char *input_file, int input_height, int input_width, int input_ch, int scale, char *output_file);
+
 
 
 #endif  //LAYER
