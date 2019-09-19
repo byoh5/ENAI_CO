@@ -77,7 +77,8 @@ tMonCmd gCmdList[] =
 	{ (char*) "bcnm_f", Batch_normalize_float, sFloat },
 	{ (char*) "scbi_f", Scale_bias_float, sFloat },
 	{ (char*) "bias_f", Bias_float, sFloat },
-
+	{ (char*) "fulc_f", Fully_connected_float, sFloat },
+	{ (char*) "scon_f", Scale_only_float, sFloat },
 
 	{ 0, 0, 0 }
 };

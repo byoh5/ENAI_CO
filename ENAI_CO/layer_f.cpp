@@ -8,15 +8,15 @@
 #pragma warning(disable:4996)
 
 
-void new_conv_float(float *input_data, int input_height, int input_width, float *kernel_data, int kernel_height, int kernel_weight,
-	float *output_data, int output_height, int output_width, int stride, int padding){
+void new_conv_float(double *input_data, int input_height, int input_width, double *kernel_data, int kernel_height, int kernel_weight,
+	double *output_data, int output_height, int output_width, int stride, int padding){
 
 	//int output_height = (input_height + 2 * padding - kernel_height) / stride + 1;
 	//int output_width = (input_width + 2 * padding - kernel_width) / stride + 1;
 	//output의 W, H를 구하는 공식. 이미 해당 W, H를 알고있다고 가정하여 연산하지 않음. 필요시 사용.
 
 	int i, j, w, h, s = 0;
-	float sum = 0, p_sum = 0;
+	double sum = 0, p_sum = 0;
 
 	int total_width = input_width + 2 * padding;
 	int total_height = input_height + 2 * padding;
@@ -46,10 +46,10 @@ void new_conv_float(float *input_data, int input_height, int input_width, float 
 
 }
 
-void standard_convolution_float(float *input_data, int input_height, int input_width, int input_ch, float *kernel_data, int kernel_height, int kernel_width, int kernel_ch,
-	float *output_data, int output_height, int output_width, int stride, int padding){
+void standard_convolution_float(double *input_data, int input_height, int input_width, int input_ch, double *kernel_data, int kernel_height, int kernel_width, int kernel_ch,
+	double *output_data, int output_height, int output_width, int stride, int padding){
 
-	float *input_buf, *kernel_buf, *output_buf;
+	double *input_buf, *kernel_buf, *output_buf;
 	int i, j;
 
 	for (i = 0; i < input_ch; i++){
@@ -72,10 +72,10 @@ void standard_convolution_float(float *input_data, int input_height, int input_w
 	}
 }
 
-void depthwise_convolution_float(float *input_data, int input_height, int input_width, int input_ch, float *kernel_data, int kernel_height, int kernel_width, int kernel_ch,
-	float *output_data, int output_height, int output_width, int stride, int padding){
+void depthwise_convolution_float(double *input_data, int input_height, int input_width, int input_ch, double *kernel_data, int kernel_height, int kernel_width, int kernel_ch,
+	double *output_data, int output_height, int output_width, int stride, int padding){
 
-	float *input_buf, *kernel_buf, *output_buf;
+	double *input_buf, *kernel_buf, *output_buf;
 	int i, j;
 
 	if (input_ch != kernel_ch){
@@ -102,7 +102,7 @@ void depthwise_convolution_float(float *input_data, int input_height, int input_
 	}
 }
 
-void ReLU_float(float *input_data, int input_height, int input_width, int input_ch){
+void ReLU_float(double *input_data, int input_height, int input_width, int input_ch){
 	int i;
 	int all_mul = input_height * input_width * input_ch;
 	for (i = 0; i < all_mul; i++){
@@ -110,11 +110,11 @@ void ReLU_float(float *input_data, int input_height, int input_width, int input_
 	}
 }
 
-void new_max_pool_float(float *input_data, int input_height, int input_weight, int input_ch, float *result, int kernel_height, int kernel_weight, int stride){
+void new_max_pool_float(double *input_data, int input_height, int input_weight, int input_ch, double *result, int kernel_height, int kernel_weight, int stride){
 	int output_height = (input_height - kernel_height) / stride + 1;
 	int output_weight = (input_weight - kernel_weight) / stride + 1;
 	int q, i, j, w, h, s = 0;
-	float Max_value = input_data[0];
+	double Max_value = input_data[0];
 
 	for (q = 0; q < input_ch; q++){
 		for (i = 0; i < input_height - 2; i += stride){
@@ -122,7 +122,7 @@ void new_max_pool_float(float *input_data, int input_height, int input_weight, i
 				Max_value = input_data[input_height*input_weight*q + input_weight*i + j];
 				for (h = 0; h < kernel_height; h++){
 					for (w = 0; w < kernel_weight; w++){
-						float buf1 = input_data[input_weight*(i + h + input_height*q) + j + w];
+						double buf1 = input_data[input_weight*(i + h + input_height*q) + j + w];
 						Max_value = (Max_value > buf1) ? Max_value : buf1;
 					}
 				}
@@ -140,31 +140,31 @@ void shift_float(float *input_data, int in_length, int shift_num){
 	}
 }
 */
-void global_average_pooling_float(float *input_data, int input_height, int input_width, int input_ch, float *out_data){ // output size : 1X1Xinput_ch
+void global_average_pooling_float(double *input_data, int input_height, int input_width, int input_ch, double *out_data){ // output size : 1X1Xinput_ch
 	int i, j;
-	float sum = 0;
+	double sum = 0;
 	int s = 0;
 	int mul_in = input_height * input_width;
-	float *input_data_buf;
+	double *input_data_buf;
 
 	for (j = 0; j < input_ch; j++){
-		input_data_buf = (float*)(input_data + mul_in * j);
+		input_data_buf = (double*)(input_data + mul_in * j);
 
 		for (i = 0; i < mul_in; i++){
 			sum = sum + input_data_buf[i];
 		}
-		out_data[s] = sum;
+		out_data[s] = sum / mul_in;
 		//printf("%f\n", s, sum / (13 * 13));
 		sum = 0;
 		s++;
 	}
 }
 
-void softmax_float(float *input_data, int in_length){
+void softmax_float(double *input_data, int in_length){
 
 	int i;
 	int label[1] = { 0 };
-	float max[1] = { 0 };
+	double max[1] = { 0 };
 	//max[0] = input_data[0];
 
 	for (i = 0; i<in_length; i++){
@@ -195,7 +195,7 @@ void softmax_float(float *input_data, int in_length){
 
 }
 
-void file2data_float(char *filename, float *input_data){
+void file2data_float(char *filename, double *input_data){
 
 	FILE *fp;
 
@@ -208,15 +208,15 @@ void file2data_float(char *filename, float *input_data){
 	{
 		char buffer[100] = { 0, };
 		char *pStr;
-		float num1;
-		float *in_data_buf = input_data;
+		double num1;
+		double *in_data_buf = input_data;
 		int i = 0;
 
 		while (!feof(fp)){
 			pStr = fgets(buffer, sizeof(buffer), fp);
 			//printf("%s", pStr);
 			if (pStr != NULL){
-				num1 =(float)atof(pStr);
+				num1 =(double)atof(pStr);
 				//printf("%d. %f\n", i + 1, num1);
 
 				input_data[i] = num1;
@@ -233,14 +233,14 @@ void file2data_float(char *filename, float *input_data){
 }
 
 
-void batch_normalize_float(float *input_data, int input_height, int input_width, int input_ch, float *kernel_data_1, float *kernel_data_2, float *kernel_data_3, float *output_data){
+void batch_normalize_float(double *input_data, int input_height, int input_width, int input_ch, double *kernel_data_1, double *kernel_data_2, double *kernel_data_3, double *output_data){
 
-	float *input_buf, *kernel_1_buf, *kernel_2_buf, *kernel_3_buf, *output_buf;
+	double *input_buf, *kernel_1_buf, *kernel_2_buf, *kernel_3_buf, *output_buf;
 	int i, j;
 
-	float mean = 0;
-	float var = 0;
-	float scalef = 0;
+	double mean = 0;
+	double var = 0;
+	double scalef = 0;
 
 	for (i = 0; i < input_ch; i++){
 			input_buf = input_data + (i*input_height*input_width);
@@ -261,12 +261,12 @@ void batch_normalize_float(float *input_data, int input_height, int input_width,
 	}
 }
 
-void scale_bias_float(float *input_data, int input_height, int input_width, int input_ch, float *kernel_data_1, float *kernel_data_2, float *output_data){
+void scale_bias_float(double *input_data, int input_height, int input_width, int input_ch, double *kernel_data_1, double *kernel_data_2, double *output_data){
 
-	float *input_buf, *kernel_1_buf, *kernel_2_buf, *output_buf;
+	double *input_buf, *kernel_1_buf, *kernel_2_buf, *output_buf;
 	int i, j;
 
-	float scale=0, shift=0;
+	double scale=0, shift=0;
 
 	for (i = 0; i < input_ch; i++){
 		input_buf = input_data + (i*input_height*input_width);
@@ -285,12 +285,12 @@ void scale_bias_float(float *input_data, int input_height, int input_width, int 
 }
 
 
-void bias_float(float *input_data, int input_height, int input_width, int input_ch, float *kernel_data_1, float *output_data){
+void bias_float(double *input_data, int input_height, int input_width, int input_ch, double *kernel_data_1, double *output_data){
 
-	float *input_buf, *kernel_1_buf, *output_buf;
+	double *input_buf, *kernel_1_buf, *output_buf;
 	int i, j;
 
-	float bias = 0;
+	double bias = 0;
 
 	for (i = 0; i < input_ch; i++){
 		input_buf = input_data + (i*input_height*input_width);
@@ -305,30 +305,43 @@ void bias_float(float *input_data, int input_height, int input_width, int input_
 	}
 }
 
+void scale_only_float(double *input_data, int input_height, int input_width, int input_ch, float scale, double *output_data){
+
+	int i;
+
+	double bias = 0;
+
+	for (i = 0; i < input_ch*input_height*input_width ; i++){
+		*(output_data + i) = *(input_data + i) * scale;
+		
+	}
+}
+
+
 
 void standard_convolution_float_rapper(char *input_file, int input_height, int input_width, int input_ch, char *kernel_file, int kernel_height, int kernel_width, int kernel_ch,
 	char *output_file, int output_height, int output_width, int stride, int padding){
 
-	float* input_data = (float*)malloc(sizeof(float)*(input_height * input_width * input_ch));
+	double* input_data = (double*)malloc(sizeof(double)*(input_height * input_width * input_ch));
 	if (input_data == NULL) {
 		printf("malloc fail\n");
 		return;
 	}
 	file2data_float(input_file, input_data);
 
-	float* kernel_data = (float*)malloc(sizeof(float)*(kernel_height * kernel_width * kernel_ch * input_ch));
+	double* kernel_data = (double*)malloc(sizeof(double)*(kernel_height * kernel_width * kernel_ch * input_ch));
 	if (kernel_data == NULL) {
 		printf("malloc fail\n");
 		return;
 	}
 	file2data_float(kernel_file, kernel_data);
 
-	float* output_data = (float*)malloc(sizeof(float)*(output_height * output_width * kernel_ch));
+	double* output_data = (double*)malloc(sizeof(double)*(output_height * output_width * kernel_ch));
 	if (output_data == NULL) {
 		printf("malloc fail\n");
 		return;
 	}
-	if (output_data != NULL)memset(output_data, 0, sizeof(float)*(output_height * output_width * kernel_ch));
+	if (output_data != NULL)memset(output_data, 0, sizeof(double)*(output_height * output_width * kernel_ch));
 
 #define OUTDATA_CHECKER_CONV
 #ifdef OUTDATA_CHECKER_CONV
@@ -341,7 +354,7 @@ void standard_convolution_float_rapper(char *input_file, int input_height, int i
 	standard_convolution_float(input_data, input_height, input_width, input_ch, kernel_data, kernel_height, kernel_width, kernel_ch, output_data, output_height, output_width, stride, padding);
 
 
-	float* pOutput_data = output_data;
+	double* pOutput_data = output_data;
 	FILE *fp = NULL;
 	fp = fopen(output_file, "w");
 	if (fp != NULL){
@@ -370,26 +383,26 @@ void depthwise_convolution_float_rapper(char *input_file, int input_height, int 
 		return;
 	}
 
-	float* input_data = (float*)malloc(sizeof(float)*(input_height * input_width * input_ch));
+	double* input_data = (double*)malloc(sizeof(double)*(input_height * input_width * input_ch));
 	if (input_data == NULL) {
 		printf("malloc fail\n");
 		return;
 	}
 	file2data_float(input_file, input_data);
 
-	float* kernel_data = (float*)malloc(sizeof(float)*(kernel_height * kernel_width * input_ch));
+	double* kernel_data = (double*)malloc(sizeof(double)*(kernel_height * kernel_width * input_ch));
 	if (kernel_data == NULL) {
 		printf("malloc fail\n");
 		return;
 	}
 	file2data_float(kernel_file, kernel_data);
 
-	float* output_data = (float*)malloc(sizeof(float)*(output_height * output_width * input_ch));
+	double* output_data = (double*)malloc(sizeof(double)*(output_height * output_width * input_ch));
 	if (output_data == NULL) {
 		printf("malloc fail\n");
 		return;
 	}
-	if (output_data != NULL)memset(output_data, 0, sizeof(float)*(output_height * output_width * input_ch));
+	if (output_data != NULL)memset(output_data, 0, sizeof(double)*(output_height * output_width * input_ch));
 
 #define OUTDATA_CHECKER_CONV
 #ifdef OUTDATA_CHECKER_CONV
@@ -402,7 +415,7 @@ void depthwise_convolution_float_rapper(char *input_file, int input_height, int 
 	depthwise_convolution_float(input_data, input_height, input_width, input_ch, kernel_data, kernel_height, kernel_width, kernel_ch, output_data, output_height, output_width, stride, padding);
 
 
-	float* pOutput_data = output_data;
+	double* pOutput_data = output_data;
 	FILE *fp = NULL;
 	fp = fopen(output_file, "w");
 	if (fp != NULL){
@@ -422,25 +435,86 @@ void depthwise_convolution_float_rapper(char *input_file, int input_height, int 
 
 }
 
-void relu_float_rapper(char* input_file, int input_height, int input_width, int input_ch, char* output_file)
-{
 
-	float* input_data = NULL;
-	input_data = (float*)malloc(sizeof(float)*(input_height * input_width * input_ch));
+void fully_connected_float_rapper(char *input_file, int input_ch, char *kernel_file, int kernel_ch,char *output_file){
+
+
+
+	double* input_data = (double*)malloc(sizeof(double)*(input_ch));
 	if (input_data == NULL) {
 		printf("malloc fail\n");
 		return;
 	}
 	file2data_float(input_file, input_data);
 
-	float* output_data = NULL;
-	output_data = (float*)malloc(sizeof(float)* (input_height * input_width * input_ch));
+	double* kernel_data = (double*)malloc(sizeof(double)*( input_ch *kernel_ch));
+	if (kernel_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data_float(kernel_file, kernel_data);
+
+	double* output_data = (double*)malloc(sizeof(double)*(kernel_ch));
 	if (output_data == NULL) {
 		printf("malloc fail\n");
 		return;
 	}
-	float* pdata = output_data;
-	memcpy(output_data, input_data, sizeof(float)* (input_height * input_width * input_ch));
+	if (output_data != NULL)memset(output_data, 0, sizeof(double)*(kernel_ch));
+
+
+	//depthwise_convolution_float(input_data, input_height, input_width, input_ch, kernel_data, kernel_height, kernel_width, kernel_ch, output_data, output_height, output_width, stride, padding);
+	int i = 0, k = 0;
+	for (i = 0; i < kernel_ch; i++){
+		for (k = 0; k < input_ch; k++){
+
+			*(output_data + i) += *(input_data + k) * *(kernel_data + (i*input_ch) + k);
+
+		}
+	}
+		
+
+
+
+	double* pOutput_data = output_data;
+	FILE *fp = NULL;
+	fp = fopen(output_file, "w");
+	if (fp != NULL){
+		for (int i = 0; i < kernel_ch; i++){
+			//	printf("%d\n", output_data[i]);
+			fprintf(fp, "%e\n", *pOutput_data);
+			pOutput_data++;
+		}
+		fclose(fp);
+	}
+	else{
+		printf("fopen fail!\n");
+	}
+	if (input_data)		free(input_data);
+	if (kernel_data)	free(kernel_data);
+	if (output_data)	free(output_data);
+
+}
+
+
+void relu_float_rapper(char* input_file, int input_height, int input_width, int input_ch, char* output_file)
+{
+
+	double* input_data = NULL;
+	input_data = (double*)malloc(sizeof(double)*(input_height * input_width * input_ch));
+	if (input_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data_float(input_file, input_data);
+
+	double* output_data = NULL;
+	output_data = (double*)malloc(sizeof(double)* (input_height * input_width * input_ch));
+	if (output_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	double* pdata = output_data;
+	memcpy(output_data, input_data, sizeof(double)* (input_height * input_width * input_ch));
 	ReLU_float(output_data, input_height, input_width, input_ch);					// Relu
 
 #define OUTDATA_CHECKER_RELU
@@ -476,19 +550,19 @@ void max_pooling_float_rapper(char* input_file, int input_height, int input_widt
 	int output_height = (input_height - pooling_height) / stride + 1;
 	int output_weight = (input_width - pooling_width) / stride + 1;
 
-	float* input_data = (float*)malloc(sizeof(float)*(input_height * input_width * input_ch));
+	double* input_data = (double*)malloc(sizeof(double)*(input_height * input_width * input_ch));
 	if (input_data == NULL) {
 		printf("malloc fail\n");
 		return;
 	}
 	file2data_float(input_file, input_data);
 
-	float* output_data = (float*)malloc(sizeof(float)*(output_height * output_weight * input_ch));
+	double* output_data = (double*)malloc(sizeof(double)*(output_height * output_weight * input_ch));
 	if (output_data == NULL) {
 		printf("malloc fail\n");
 		return;
 	}
-	if (output_data)memset(output_data, 0, sizeof(float)*(output_height * output_weight * input_ch));
+	if (output_data)memset(output_data, 0, sizeof(double)*(output_height * output_weight * input_ch));
 
 	new_max_pool_float(input_data, input_height, input_width, input_ch, output_data, pooling_height, pooling_width, stride);
 
@@ -498,7 +572,7 @@ void max_pooling_float_rapper(char* input_file, int input_height, int input_widt
 		return;
 	}
 
-	float* pdata = output_data;
+	double* pdata = output_data;
 
 	for (int i = 0; i < output_height * output_weight * input_ch; i++){
 		//	printf("%d\n", output_data[i]);
@@ -578,19 +652,19 @@ fclose(fd3);
 
 void global_average_pooling_float_rapper(char* input_file, int input_height, int input_width, int input_ch, char* output_file)
 {
-	float* input_data = (float*)malloc(sizeof(float)*(input_height * input_width * input_ch));
+	double* input_data = (double*)malloc(sizeof(double)*(input_height * input_width * input_ch));
 	if (input_data == NULL) {
 		printf("malloc fail\n");
 		return;
 	}
 	file2data_float(input_file, input_data);
 
-	float* output_data = (float*)malloc(sizeof(float)*(1 * 1 * input_ch));
+	double* output_data = (double*)malloc(sizeof(double)*(1 * 1 * input_ch));
 	if (output_data == NULL) {
 		printf("malloc fail\n");
 		return;
 	}
-	if (output_data)memset(output_data, 0, sizeof(float)*(1 * 1 * input_ch));
+	if (output_data)memset(output_data, 0, sizeof(double)*(1 * 1 * input_ch));
 
 
 	global_average_pooling_float(input_data, input_height, input_width, input_ch, output_data);
@@ -602,7 +676,7 @@ void global_average_pooling_float_rapper(char* input_file, int input_height, int
 		return;
 	}
 
-	float* pdata = output_data;
+	double* pdata = output_data;
 
 	for (int i = 0; i < input_ch; i++){
 		//	printf("%d\n", output_data[i]);
@@ -618,14 +692,14 @@ void global_average_pooling_float_rapper(char* input_file, int input_height, int
 
 void max_val_float(char* input_file, int input)
 {
-	float* input_data = (float*)malloc(sizeof(float)*(input));
+	double* input_data = (double*)malloc(sizeof(double)*(input));
 	if (input_data == NULL) {
 		printf("malloc fail\n");
 		return;
 	}
 	file2data_float(input_file, input_data);
 
-	float max = 0;
+	double max = 0;
 	int maxidx = 0;
 
 	for (int i = 0; i<input; i++){
@@ -641,7 +715,7 @@ void max_val_float(char* input_file, int input)
 }
 
 
-void layer_dump_float(float *data, int size, char* outfile)
+void layer_dump_float(double *data, int size, char* outfile)
 {
 	FILE *fp = NULL;
 	if ((fp = fopen(outfile, "w")) == NULL) {
@@ -649,7 +723,7 @@ void layer_dump_float(float *data, int size, char* outfile)
 		return;
 	}
 
-	float* pdata = data;
+	double* pdata = data;
 	for (int i = 0; i < size; i++){
 		fprintf(fp, "%e\n", *pdata);
 		pdata++;
@@ -661,28 +735,28 @@ void layer_dump_float(float *data, int size, char* outfile)
 void batch_normalize_float_rapper(char *input_file, int input_height, int input_width, int input_ch, char *kernel_1_file, char *kernel_2_file, char *kernel_3_file, char *output_file){
 
 	
-		float* input_data = (float*)malloc(sizeof(float)*(input_height * input_width * input_ch));
+		double* input_data = (double*)malloc(sizeof(double)*(input_height * input_width * input_ch));
 		if (input_data == NULL) {
 			printf("malloc fail\n");
 			return;
 		}
 		file2data_float(input_file, input_data);
 
-		float* kernel_data_1 = (float*)malloc(sizeof(float)*(input_ch));
+		double* kernel_data_1 = (double*)malloc(sizeof(double)*(input_ch));
 		if (kernel_data_1 == NULL) {
 			printf("malloc fail\n");
 			return;
 		}
 		file2data_float(kernel_1_file, kernel_data_1);
 
-		float* kernel_data_2 = (float*)malloc(sizeof(float)*(input_ch));
+		double* kernel_data_2 = (double*)malloc(sizeof(double)*(input_ch));
 		if (kernel_data_2 == NULL) {
 			printf("malloc fail\n");
 			return;
 		}
 		file2data_float(kernel_2_file, kernel_data_2);
 
-		float* kernel_data_3 = (float*)malloc(sizeof(float));
+		double* kernel_data_3 = (double*)malloc(sizeof(double));
 		if (kernel_data_3 == NULL) {
 			printf("malloc fail\n");
 			return;
@@ -690,17 +764,17 @@ void batch_normalize_float_rapper(char *input_file, int input_height, int input_
 		file2data_float(kernel_3_file, kernel_data_3);
 
 
-		float* output_data = (float*)malloc(sizeof(float)*(input_height * input_width * input_ch));
+		double* output_data = (double*)malloc(sizeof(double)*(input_height * input_width * input_ch));
 		if (output_data == NULL) {
 			printf("malloc fail\n");
 			return;
 		}
-		if (output_data != NULL)memset(output_data, 0, sizeof(float)*(input_height * input_width * input_ch));
+		if (output_data != NULL)memset(output_data, 0, sizeof(double)*(input_height * input_width * input_ch));
 
 
 		batch_normalize_float(input_data, input_height, input_width, input_ch, kernel_data_1, kernel_data_2, kernel_data_3, output_data);
 
-		float* pOutput_data = output_data;
+		double* pOutput_data = output_data;
 		FILE *fp = NULL;
 		fp = fopen(output_file, "w");
 		if (fp != NULL){
@@ -725,21 +799,21 @@ void batch_normalize_float_rapper(char *input_file, int input_height, int input_
 void scale_bias_float_rapper(char *input_file, int input_height, int input_width, int input_ch, char *kernel_1_file, char *kernel_2_file, char *output_file){
 
 
-	float* input_data = (float*)malloc(sizeof(float)*(input_height * input_width * input_ch));
+	double* input_data = (double*)malloc(sizeof(double)*(input_height * input_width * input_ch));
 	if (input_data == NULL) {
 		printf("malloc fail\n");
 		return;
 	}
 	file2data_float(input_file, input_data);
 
-	float* kernel_data_1 = (float*)malloc(sizeof(float)*(input_ch));
+	double* kernel_data_1 = (double*)malloc(sizeof(double)*(input_ch));
 	if (kernel_data_1 == NULL) {
 		printf("malloc fail\n");
 		return;
 	}
 	file2data_float(kernel_1_file, kernel_data_1);
 
-	float* kernel_data_2 = (float*)malloc(sizeof(float)*(input_ch));
+	double* kernel_data_2 = (double*)malloc(sizeof(double)*(input_ch));
 	if (kernel_data_2 == NULL) {
 		printf("malloc fail\n");
 		return;
@@ -747,17 +821,17 @@ void scale_bias_float_rapper(char *input_file, int input_height, int input_width
 	file2data_float(kernel_2_file, kernel_data_2);
 
 
-	float* output_data = (float*)malloc(sizeof(float)*(input_height * input_width * input_ch));
+	double* output_data = (double*)malloc(sizeof(double)*(input_height * input_width * input_ch));
 	if (output_data == NULL) {
 		printf("malloc fail\n");
 		return;
 	}
-	if (output_data != NULL)memset(output_data, 0, sizeof(float)*(input_height * input_width * input_ch));
+	if (output_data != NULL)memset(output_data, 0, sizeof(double)*(input_height * input_width * input_ch));
 
 
 	scale_bias_float(input_data, input_height, input_width, input_ch, kernel_data_1, kernel_data_2, output_data);
 
-	float* pOutput_data = output_data;
+	double* pOutput_data = output_data;
 	FILE *fp = NULL;
 	fp = fopen(output_file, "w");
 	if (fp != NULL){
@@ -782,31 +856,31 @@ void scale_bias_float_rapper(char *input_file, int input_height, int input_width
 void bias_float_rapper(char *input_file, int input_height, int input_width, int input_ch, char *kernel_1_file, char *output_file){
 
 
-	float* input_data = (float*)malloc(sizeof(float)*(input_height * input_width * input_ch));
+	double* input_data = (double*)malloc(sizeof(double)*(input_height * input_width * input_ch));
 	if (input_data == NULL) {
 		printf("malloc fail\n");
 		return;
 	}
 	file2data_float(input_file, input_data);
 
-	float* kernel_data_1 = (float*)malloc(sizeof(float)*(input_ch));
+	double* kernel_data_1 = (double*)malloc(sizeof(double)*(input_ch));
 	if (kernel_data_1 == NULL) {
 		printf("malloc fail\n");
 		return;
 	}
 	file2data_float(kernel_1_file, kernel_data_1);
 
-	float* output_data = (float*)malloc(sizeof(float)*(input_height * input_width * input_ch));
+	double* output_data = (double*)malloc(sizeof(double)*(input_height * input_width * input_ch));
 	if (output_data == NULL) {
 		printf("malloc fail\n");
 		return;
 	}
-	if (output_data != NULL)memset(output_data, 0, sizeof(float)*(input_height * input_width * input_ch));
+	if (output_data != NULL)memset(output_data, 0, sizeof(double)*(input_height * input_width * input_ch));
 
 
 	bias_float(input_data, input_height, input_width, input_ch, kernel_data_1, output_data);
 
-	float* pOutput_data = output_data;
+	double* pOutput_data = output_data;
 	FILE *fp = NULL;
 	fp = fopen(output_file, "w");
 	if (fp != NULL){
@@ -822,6 +896,46 @@ void bias_float_rapper(char *input_file, int input_height, int input_width, int 
 	}
 	if (input_data)		free(input_data);
 	if (kernel_data_1)	free(kernel_data_1);
+	if (output_data)	free(output_data);
+
+}
+
+
+void scale_only_float_rapper(char *input_file, int input_height, int input_width, int input_ch, float scale, char *output_file){
+
+
+	double* input_data = (double*)malloc(sizeof(double)*(input_height * input_width * input_ch));
+	if (input_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data_float(input_file, input_data);
+
+	double* output_data = (double*)malloc(sizeof(double)*(input_height * input_width * input_ch));
+	if (output_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	if (output_data != NULL)memset(output_data, 0, sizeof(double)*(input_height * input_width * input_ch));
+
+
+	scale_only_float(input_data, input_height, input_width, input_ch, scale, output_data);
+
+	double* pOutput_data = output_data;
+	FILE *fp = NULL;
+	fp = fopen(output_file, "w");
+	if (fp != NULL){
+		for (int i = 0; i < input_height * input_width * input_ch; i++){
+			//	printf("%d\n", output_data[i]);
+			fprintf(fp, "%e\n", *pOutput_data);
+			pOutput_data++;
+		}
+		fclose(fp);
+	}
+	else{
+		printf("fopen fail!\n");
+	}
+	if (input_data)		free(input_data);
 	if (output_data)	free(output_data);
 
 }

@@ -77,6 +77,24 @@ UINT32 DepthwiseConvolution_float(int argc, char** argv)
 }
 
 
+UINT32 Fully_connected_float(int argc, char** argv)
+{
+	if (argc != 6){
+		printf("ex)fulc_f in-filename in-ch kernel-filename k-ch out-filename  \n");
+		//                   1         2          3           4         5          
+		return -1;
+	}
+	
+	int in_ch = atoi(argv[2]);
+
+	
+	int k_ch = atoi(argv[4]);
+
+	fully_connected_float_rapper(argv[1], in_ch, argv[3], k_ch, argv[5]);
+
+	return 0;
+}
+
 UINT32 Concatenate_float(int argc, char** argv)
 {
 	if (argc != 4){
@@ -207,6 +225,23 @@ UINT32 Bias_float(int argc, char** argv)
 	int in_ch = atoi(argv[4]);
 
 	bias_float_rapper(argv[1], in_H, in_W, in_ch, argv[5], argv[6]);
+
+	return 0;
+}
+
+UINT32 Scale_only_float(int argc, char** argv)
+{
+	if (argc != 7){
+		printf("ex)scon_f in-filename in-H in-W in-ch scale out-filename \n");
+		//                     1        2    3    4      5         6                             
+		return -1;
+	}
+	int in_H = atoi(argv[2]);
+	int in_W = atoi(argv[3]);
+	int in_ch = atoi(argv[4]);
+	float scale = atof(argv[5]);
+
+	scale_only_float_rapper(argv[1], in_H, in_W, in_ch, scale ,argv[6]);
 
 	return 0;
 }

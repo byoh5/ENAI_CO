@@ -73,4 +73,6 @@ extern UINT32 Max_value_float(int argc, char** argv);
 extern UINT32 Batch_normalize_float(int argc, char** argv);
 extern UINT32 Scale_bias_float(int argc, char** argv);
 extern UINT32 Bias_float(int argc, char** argv);
+extern UINT32 Fully_connected_float(int argc, char** argv);
+extern UINT32 Scale_only_float(int argc, char** argv);
 #endif //SHELL_FUNCTION_H

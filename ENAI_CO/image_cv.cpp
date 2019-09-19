@@ -135,8 +135,8 @@ UINT32 dataResize(int argc, char** argv){
 	if (ch == 3){
 
 		for (int i = 0; i < size_h * size_w; i++){
-			//	printf("R %d\n", ch_bgr[2].data[i]);
-			fprintf(fp, "%d\n", ch_bgr[2].data[i]);
+			//	printf("B %d\n", ch_bgr[2].data[i]);
+			fprintf(fp, "%d\n", ch_bgr[0].data[i]);
 		}
 
 		for (int i = 0; i < size_h * size_w; i++){
@@ -145,8 +145,8 @@ UINT32 dataResize(int argc, char** argv){
 		}
 
 		for (int i = 0; i < size_h * size_w; i++){
-			//	printf("B %d\n", ch_bgr[0].data[i]);
-			fprintf(fp, "%d\n", ch_bgr[0].data[i]);
+			//	printf("R %d\n", ch_bgr[0].data[i]);
+			fprintf(fp, "%d\n", ch_bgr[2].data[i]);
 		}
 	}else if(ch == 1){
 		for (int i = 0; i < size_h * size_w; i++){
