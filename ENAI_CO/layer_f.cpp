@@ -285,6 +285,48 @@ void scale_bias_float(float *input_data, int input_height, int input_width, int 
 }
 
 
+void batch_normalize_plus_scale_bias_float(int input_ch, float *kernel_data_1, float *kernel_data_2, float *kernel_data_3, float *kernel_data_4, float *kernel_data_5, float *output_data_1, float *output_data_2){
+
+	float *input_buf, *kernel_1_buf, *kernel_2_buf, *kernel_3_buf, *kernel_4_buf, *kernel_5_buf, *output_buf_1, *output_buf_2;
+	int i;
+
+	float mean = 0;
+	float var = 0;
+	float scalef = 0;
+
+	float scal = 0;
+	float bias = 0;
+
+	for (i = 0; i < input_ch; i++){
+//		input_buf = input_data + (i*input_height*input_width);
+		kernel_1_buf = kernel_data_1 + i;
+		kernel_2_buf = kernel_data_2 + i;
+		kernel_3_buf = kernel_data_3;
+		kernel_4_buf = kernel_data_4 + i;
+		kernel_5_buf = kernel_data_5 + i;
+		output_buf_1 = output_data_1 + i;
+		output_buf_2 = output_data_2 + i;
+
+		mean	= *kernel_1_buf;
+		var		= *kernel_2_buf;
+		scalef	= *kernel_3_buf;
+		scal	= *kernel_4_buf;
+		bias	= *kernel_5_buf;
+
+
+		mean = mean / scalef;
+		var = var / scalef;
+		
+		float a = 1.0 / sqrt(var + .000001f);
+		float b = -(mean *a);
+
+		*output_buf_1 = a * scal;
+		*output_buf_2 = b * scal + bias;			
+		
+	}
+}
+
+
 void bias_float(float *input_data, int input_height, int input_width, int input_ch, float *kernel_data_1, float *output_data){
 
 	float *input_buf, *kernel_1_buf, *output_buf;
@@ -358,7 +400,7 @@ void standard_convolution_float_rapper(char *input_file, int input_height, int i
 	if (fp != NULL){
 		for (int i = 0; i < output_height * output_width*kernel_ch; i++){
 //			printf("%e\n", *pOutput_data);
-			fprintf(fp, "%.15f\n", *pOutput_data);
+			fprintf(fp, "%f\n", *pOutput_data);
 			pOutput_data++;
 		}
 		fclose(fp);
@@ -419,7 +461,7 @@ void depthwise_convolution_float_rapper(char *input_file, int input_height, int 
 	if (fp != NULL){
 		for (int i = 0; i < output_height * output_width*kernel_ch; i++){
 			//	printf("%d\n", output_data[i]);
-			fprintf(fp, "%.15f\n", *pOutput_data);
+			fprintf(fp, "%f\n", *pOutput_data);
 			pOutput_data++;
 		}
 		fclose(fp);
@@ -479,7 +521,7 @@ void fully_connected_float_rapper(char *input_file, int input_ch, char *kernel_f
 	if (fp != NULL){
 		for (int i = 0; i < kernel_ch; i++){
 			//	printf("%d\n", output_data[i]);
-			fprintf(fp, "%.15f\n", *pOutput_data);
+			fprintf(fp, "%f\n", *pOutput_data);
 			pOutput_data++;
 		}
 		fclose(fp);
@@ -534,7 +576,7 @@ void relu_float_rapper(char* input_file, int input_height, int input_width, int 
 
 	for (int i = 0; i < (input_height * input_width * input_ch); i++){
 		//	printf("%d\n", output_data[i]); 
-		fprintf(fp, "%.15f\n", *pdata);
+		fprintf(fp, "%f\n", *pdata);
 		pdata++;
 	}
 	fclose(fp);
@@ -574,7 +616,7 @@ void max_pooling_float_rapper(char* input_file, int input_height, int input_widt
 
 	for (int i = 0; i < output_height * output_weight * input_ch; i++){
 		//	printf("%d\n", output_data[i]);
-		fprintf(fp, "%.15f\n", *pdata);
+		fprintf(fp, "%f\n", *pdata);
 		pdata++;
 	}
 	fclose(fp);
@@ -678,7 +720,7 @@ void global_average_pooling_float_rapper(char* input_file, int input_height, int
 
 	for (int i = 0; i < input_ch; i++){
 		//	printf("%d\n", output_data[i]);
-		fprintf(fp, "%.15f\n", *pdata);
+		fprintf(fp, "%f\n", *pdata);
 		pdata++;
 	}
 	fclose(fp);
@@ -723,7 +765,7 @@ void layer_dump_float(float *data, int size, char* outfile)
 
 	float* pdata = data;
 	for (int i = 0; i < size; i++){
-		fprintf(fp, "%.15f\n", *pdata);
+		fprintf(fp, "%f\n", *pdata);
 		pdata++;
 	}
 	fclose(fp);
@@ -778,7 +820,7 @@ void batch_normalize_float_rapper(char *input_file, int input_height, int input_
 		if (fp != NULL){
 			for (int i = 0; i < input_height * input_width * input_ch; i++){
 				//	printf("%d\n", output_data[i]);
-				fprintf(fp, "%.15f\n", *pOutput_data);
+				fprintf(fp, "%f\n", *pOutput_data);
 				pOutput_data++;
 			}
 			fclose(fp);
@@ -793,6 +835,104 @@ void batch_normalize_float_rapper(char *input_file, int input_height, int input_
 		if (output_data)	free(output_data);
 
 	}
+
+
+void batch_normalize_plus_scale_bias_float_rapper(int input_ch,char *kernel_1_file, char *kernel_2_file, char *kernel_3_file, char *kernel_4_file, char *kernel_5_file, char *output_1_file,char *output_2_file){
+
+
+	
+
+	float* kernel_data_1 = (float*)malloc(sizeof(float)*(input_ch));
+	if (kernel_data_1 == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data_float(kernel_1_file, kernel_data_1);
+
+	float* kernel_data_2 = (float*)malloc(sizeof(float)*(input_ch));
+	if (kernel_data_2 == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data_float(kernel_2_file, kernel_data_2);
+
+	float* kernel_data_3 = (float*)malloc(sizeof(float));
+	if (kernel_data_3 == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data_float(kernel_3_file, kernel_data_3);
+
+	float* kernel_data_4 = (float*)malloc(sizeof(float)*(input_ch));
+	if (kernel_data_4 == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data_float(kernel_4_file, kernel_data_4);
+
+	float* kernel_data_5 = (float*)malloc(sizeof(float)*(input_ch));
+	if (kernel_data_5 == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	file2data_float(kernel_5_file, kernel_data_5);
+
+
+	float* output_data_1 = (float*)malloc(sizeof(float)*(input_ch));
+	if (output_data_1 == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	if (output_data_1 != NULL)memset(output_data_1, 0, sizeof(float)*(input_ch));
+
+	float* output_data_2 = (float*)malloc(sizeof(float)*(input_ch));
+	if (output_data_2 == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	if (output_data_2 != NULL)memset(output_data_2, 0, sizeof(float)*(input_ch));
+
+	batch_normalize_plus_scale_bias_float(input_ch, kernel_data_1, kernel_data_2, kernel_data_3, kernel_data_4, kernel_data_5, output_data_1, output_data_2);
+
+	float* pOutput_data_1 = output_data_1;
+	FILE *fp1 = NULL;
+	fp1 = fopen(output_1_file, "w");
+	if (fp1 != NULL){
+		for (int i = 0; i < input_ch; i++){
+			//	printf("%d\n", output_data[i]);
+			fprintf(fp1, "%f\n", *pOutput_data_1);
+			pOutput_data_1++;
+		}
+		fclose(fp1);
+	}
+	else{
+		printf("fopen fail!\n");
+	}
+
+	float* pOutput_data_2 = output_data_2;
+	FILE *fp2 = NULL;
+	fp2 = fopen(output_2_file, "w");
+	if (fp2 != NULL){
+		for (int i = 0; i < input_ch; i++){
+			//	printf("%d\n", output_data[i]);
+			fprintf(fp2, "%f\n", *pOutput_data_2);
+			pOutput_data_2++;
+		}
+		fclose(fp2);
+	}
+	else{
+		printf("fopen fail!\n");
+	}
+
+	if (kernel_data_1)	free(kernel_data_1);
+	if (kernel_data_2)	free(kernel_data_2);
+	if (kernel_data_3)	free(kernel_data_3);
+	if (kernel_data_4)	free(kernel_data_4);
+	if (kernel_data_5)	free(kernel_data_5);
+	if (output_data_1)	free(output_data_1);
+	if (output_data_2)	free(output_data_2);
+
+}
 
 void scale_bias_float_rapper(char *input_file, int input_height, int input_width, int input_ch, char *kernel_1_file, char *kernel_2_file, char *output_file){
 
@@ -835,7 +975,7 @@ void scale_bias_float_rapper(char *input_file, int input_height, int input_width
 	if (fp != NULL){
 		for (int i = 0; i < input_height * input_width * input_ch; i++){
 			//	printf("%d\n", output_data[i]);
-			fprintf(fp, "%.15f\n", *pOutput_data);
+			fprintf(fp, "%f\n", *pOutput_data);
 			pOutput_data++;
 		}
 		fclose(fp);
@@ -884,7 +1024,7 @@ void bias_float_rapper(char *input_file, int input_height, int input_width, int 
 	if (fp != NULL){
 		for (int i = 0; i < input_height * input_width * input_ch; i++){
 			//	printf("%d\n", output_data[i]);
-			fprintf(fp, "%.15f\n", *pOutput_data);
+			fprintf(fp, "%f\n", *pOutput_data);
 			pOutput_data++;
 		}
 		fclose(fp);
@@ -925,7 +1065,7 @@ void scale_only_float_rapper(char *input_file, int input_height, int input_width
 	if (fp != NULL){
 		for (int i = 0; i < input_height * input_width * input_ch; i++){
 		//	printf("%f\n", *pOutput_data);
-			fprintf(fp, "%.15f\n", *pOutput_data);
+			fprintf(fp, "%f\n", *pOutput_data);
 			pOutput_data++;
 		}
 		fclose(fp);
@@ -936,4 +1076,56 @@ void scale_only_float_rapper(char *input_file, int input_height, int input_width
 	if (input_data)		free(input_data);
 	if (output_data)	free(output_data);
 
+}
+
+void diff_float_rapper(char *input_file1, char *input_file2, char *output_file){
+
+
+	FILE *fpi1;
+	FILE *fpi2;
+	FILE *fpo;
+
+	if ((fpi1 = fopen(input_file1, "r")) == NULL){
+		printf("fopen fail! \n");
+		return;
+	}
+
+	if ((fpi2 = fopen(input_file2, "r")) == NULL) {
+		printf("fopen fail! \n");
+		return;
+	}
+
+	if ((fpo = fopen(output_file, "w")) == NULL) {
+		printf("fopen fail! \n");
+		return;
+	}
+
+
+	if ((fpi1 != NULL) && (fpi2 != NULL))
+	{
+		char buffer_1[100] = { 0, };
+		char buffer_2[100] = { 0, };
+		char s1[100] = { 0, };
+		char *pStr_1;
+		char *pStr_2;
+		float float_num1,float_num2;
+		float num2;
+
+		while (!feof(fpi1)){
+			pStr_1 = fgets(buffer_1, sizeof(buffer_1), fpi1);
+			pStr_2 = fgets(buffer_2, sizeof(buffer_2), fpi2);
+			if ((pStr_1 != NULL) && (pStr_2 != NULL)){
+				float_num1 = atof(pStr_1);
+				float_num2 = atof(pStr_2);
+				num2 = float_num1 - float_num2;
+				sprintf(s1, "%f", num2);
+				fprintf(fpo, "%s\n", s1);
+			}
+			else break;
+		}
+	}
+
+	fclose(fpi1);
+	fclose(fpi2);
+	fclose(fpo);
 }

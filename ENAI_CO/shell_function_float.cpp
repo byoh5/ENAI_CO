@@ -245,3 +245,33 @@ UINT32 Scale_only_float(int argc, char** argv)
 
 	return 0;
 }
+
+
+UINT32 Batch_normal_plus_scale_bias_float(int argc, char** argv)
+{
+	if (argc != 9){
+		printf("ex)bmsb_f   ch    k-file1 k-file2 k-file3 k-file4 k-file5 out-file1 out-file2\n");
+		//                  1        2       3        4       5       6      7          8        
+		return -1;
+	}
+
+	int in_ch = atoi(argv[1]);
+
+	batch_normalize_plus_scale_bias_float_rapper(in_ch, argv[2], argv[3], argv[4], argv[5], argv[6], argv[7], argv[8]);
+
+	return 0;
+}
+
+
+UINT32 Diff_float(int argc, char** argv)
+{
+	if (argc != 4){
+		printf("ex)diff_f  k-file1 k-file2 k-file3 \n");
+		//                  1        2       3             
+		return -1;
+	}
+
+	diff_float_rapper(argv[1], argv[2], argv[3]);
+
+	return 0;
+}

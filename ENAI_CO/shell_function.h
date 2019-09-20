@@ -82,4 +82,6 @@ extern UINT32 Scale_bias_float(int argc, char** argv);
 extern UINT32 Bias_float(int argc, char** argv);
 extern UINT32 Fully_connected_float(int argc, char** argv);
 extern UINT32 Scale_only_float(int argc, char** argv);
+extern UINT32 Batch_normal_plus_scale_bias_float(int argc, char** argv);
+extern UINT32 Diff_float(int argc, char** argv);
 #endif //SHELL_FUNCTION_H

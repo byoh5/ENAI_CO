@@ -111,8 +111,8 @@ void Convert_Float2Fixed(char *input_name, char *output_name, int fb){
 
 	if (fp != NULL)
 	{
-		char buffer[20] = { 0, };
-		char s1[20] = { 0, };
+		char buffer[100] = { 0, };
+		char s1[100] = { 0, };
 		char *pStr;
 		float float_num;
 		int num2;
@@ -155,8 +155,8 @@ void Convert_Fixed2Float(char *input_name, char *output_name, int fb){
 
 	if (fp != NULL)
 	{
-		char buffer[20] = { 0, };
-		char s1[20] = { 0, };
+		char buffer[100] = { 0, };
+		char s1[100] = { 0, };
 		char *pStr;
 		int int_num;
 		float num2;

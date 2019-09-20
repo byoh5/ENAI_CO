@@ -27,4 +27,7 @@ extern void scale_bias_float_rapper(char *input_file, int input_height, int inpu
 extern void bias_float_rapper(char *input_file, int input_height, int input_width, int input_ch, char *kernel_1_file, char *output_file);
 extern void fully_connected_float_rapper(char *input_file, int input_ch, char *kernel_file, int kernel_ch, char *output_file);
 extern void scale_only_float_rapper(char *input_file, int input_height, int input_width, int input_ch, float scale, char *output_file);
+extern void batch_normalize_plus_scale_bias_float_rapper(int input_ch, char *kernel_1_file, char *kernel_2_file, char *kernel_3_file, char *kernel_4_file, char *kernel_5_file, char *output_1_file, char *output_2_file);
+extern void diff_float_rapper(char *input_file1, char *input_file2, char *output_file);
+
 #endif //LAYER_H

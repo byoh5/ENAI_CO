@@ -8,7 +8,7 @@
 #pragma warning(disable:4996)
 
 
-#define FRICTIONBIT 15
+#define FRICTIONBIT 9
 
 int mul_fix(int a, int b, int fb) {
 	int c = a * b;
@@ -664,6 +664,7 @@ void batch_normalize(int *input_data, int input_height, int input_width, int inp
 		float var_f = fixed_to_float(var, FRICTIONBIT);
 		float div_f = sqrt(var_f + .000001f);
 		int   div_int = float_to_fixed(div_f, FRICTIONBIT);
+		if (div_int == 0) div_int = 1;  // div 0 free
 
 
 		for (j = 0; j < input_height*input_width; j++){

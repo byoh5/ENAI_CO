@@ -1,0 +1,5 @@
+fx2f inout/scon_f_0_out.txt  					fix2float/scon_f_0_out.txt  	    15
+fx2f inout/scon_int_0_out.txt					fix2float/scon_int_0_out.txt	    15
+fx2f inout/conv1_0_out.txt   					fix2float/conv1_0_out.txt   	    15
+fx2f inout/conv1_bn0_out.txt          fix2float/conv1_bn0_out.txt       15
+fx2f inout/conv1_sc0_out.txt          fix2float/conv1_sc0_out.txt       15

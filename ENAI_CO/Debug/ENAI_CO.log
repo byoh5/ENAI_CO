@@ -1,4 +1,4 @@
-﻿빌드 시작: 2019-09-19 오후 7:12:19
+﻿빌드 시작: 2019-09-20 오후 4:25:43
      1>2 노드의 "D:\EYENIX\DEV\DL\src\ENAI_CO\ENAI_CO\ENAI_CO\ENAI_CO.vcxproj" 프로젝트(Rebuild 대상)입니다.
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ID:\EYENIX\DEV\DL\src\ENAI_CO\ENAI_CO\opencv\build\include /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"Debug\ENAI_CO.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp
@@ -8,15 +8,19 @@
          shell_function_float.cpp
      1>d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\shell_function_float.cpp(242): warning C4244: '초기화 중' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
          shell_function.cpp
-     1>d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\shell_function.cpp(566): warning C4244: '초기화 중' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-     1>d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\shell_function.cpp(581): warning C4244: '초기화 중' : 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-     1>d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\shell_function.cpp(583): warning C4244: '=' : 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-     1>d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\shell_function.cpp(596): warning C4244: '초기화 중' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+     1>d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\shell_function.cpp(567): warning C4244: '초기화 중' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+     1>d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\shell_function.cpp(582): warning C4244: '초기화 중' : 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+     1>d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\shell_function.cpp(584): warning C4244: '=' : 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
      1>d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\shell_function.cpp(597): warning C4244: '초기화 중' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-     1>d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\shell_function.cpp(670): warning C4244: '초기화 중' : 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+     1>d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\shell_function.cpp(598): warning C4244: '초기화 중' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+     1>d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\shell_function.cpp(671): warning C4244: '초기화 중' : 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
          shell.cpp
          layer_f.cpp
      1>d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\layer_f.cpp(79): warning C4101: 'j' :참조되지 않은 지역 변수입니다.
+     1>d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\layer_f.cpp(320): warning C4244: '초기화 중' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+     1>d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\layer_f.cpp(290): warning C4101: 'input_buf' :참조되지 않은 지역 변수입니다.
+     1>d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\layer_f.cpp(1118): warning C4244: '=' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+     1>d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\layer_f.cpp(1119): warning C4244: '=' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
          layer.cpp
      1>d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\layer.cpp(93): warning C4101: 'j' :참조되지 않은 지역 변수입니다.
          image_cv.cpp
@@ -69,4 +73,4 @@
 
 빌드했습니다.
 
-경과 시간: 00:00:08.89
+경과 시간: 00:00:09.07

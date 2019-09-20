@@ -90,7 +90,8 @@ tMonCmd gCmdList[] =
 	{ (char*) "bias_f", Bias_float, sFloat },
 	{ (char*) "fulc_f", Fully_connected_float, sFloat },
 	{ (char*) "scon_f", Scale_only_float, sFloat },
-
+	{ (char*) "bmsb_f", Batch_normal_plus_scale_bias_float, sFloat },
+	{ (char*) "diff_f", Diff_float, sFloat },
 	{ 0, 0, 0 }
 };
 
