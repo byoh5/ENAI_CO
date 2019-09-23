@@ -8,7 +8,8 @@
 #pragma warning(disable:4996)
 
 
-#define FRICTIONBIT 9
+#define FRICTIONBIT 0
+#define SHIFTBIT	11
 
 int mul_fix(int a, int b, int fb) {
 	int c = a * b;
@@ -325,7 +326,7 @@ void standard_convolution_int_rapper(char *input_file, int input_height, int inp
 	if (fp != NULL){
 		for (int i = 0; i < output_height * output_width*kernel_ch; i++){
 			//	printf("%d\n", output_data[i]);
-			fprintf(fp, "%d\n", *pOutput_data);
+			fprintf(fp, "%d\n", (*pOutput_data) >> SHIFTBIT);
 			pOutput_data++;
 		}
 		fclose(fp);
@@ -386,7 +387,7 @@ void depthwise_convolution_int_rapper(char *input_file, int input_height, int in
 	if (fp != NULL){
 		for (int i = 0; i < output_height * output_width*kernel_ch; i++){
 			//	printf("%d\n", output_data[i]);
-			fprintf(fp, "%d\n", *pOutput_data);
+			fprintf(fp, "%d\n", (*pOutput_data) >> SHIFTBIT);
 			pOutput_data++;
 		}
 		fclose(fp);
@@ -760,7 +761,7 @@ void scale_bias(int *input_data, int input_height, int input_width, int input_ch
 
 		for (j = 0; j < input_height*input_width; j++){
 		//	*(output_buf + j) = (*(input_buf + j)*scale) + shift;
-			*(output_buf + j) = mul_fix(*(input_buf + j), scale, FRICTIONBIT) + shift;
+			*(output_buf + j) = mul_fix(*(input_buf + j), scale, SHIFTBIT) + shift;
 		}
 	}
 }
@@ -925,7 +926,7 @@ void scale_only_rapper(char *input_file, int input_height, int input_width, int 
 	if (fp != NULL){
 		for (int i = 0; i < input_height * input_width * input_ch; i++){
 			//	printf("%f\n", *pOutput_data);
-			fprintf(fp, "%d\n", *pOutput_data);
+			fprintf(fp, "%d\n", (*pOutput_data) >> SHIFTBIT);
 			pOutput_data++;
 		}
 		fclose(fp);
@@ -980,7 +981,7 @@ void fully_connected_rapper(char *input_file, int input_ch, char *kernel_file, i
 	if (fp != NULL){
 		for (int i = 0; i < kernel_ch; i++){
 			//	printf("%d\n", output_data[i]);
-			fprintf(fp, "%d\n", *pOutput_data);
+			fprintf(fp, "%d\n", (*pOutput_data)>>SHIFTBIT);
 			pOutput_data++;
 		}
 		fclose(fp);
