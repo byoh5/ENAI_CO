@@ -1,6 +1,7 @@
 #include "fixedpoint.h"
 #include "ieee754.h"
 #include "stdafx.h"
+#include <math.h>"
 
 #pragma comment (lib, "Ws2_32.lib")
 #pragma warning(disable:4996)

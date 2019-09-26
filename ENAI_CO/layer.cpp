@@ -9,7 +9,7 @@
 
 
 #define FRICTIONBIT 0
-#define SHIFTBIT	11
+#define SHIFTBIT	13
 
 int mul_fix(int a, int b, int fb) {
 	int c = a * b;
