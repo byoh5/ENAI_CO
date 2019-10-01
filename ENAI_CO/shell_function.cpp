@@ -77,6 +77,8 @@ tMonCmd gCmdList[] =
 	{ (char*) "fulc", Fully_connected, sInt },
 	{ (char*) "scon", Scale_only, sInt },
 
+	{ (char*) "dviu", Data_view, sInt },
+
 
 	{ (char*) "conv_f", Convolution_float, sFloat },
 	{ (char*) "dwcv_f", DepthwiseConvolution_float, sFloat },
@@ -692,3 +694,23 @@ UINT32 Fully_connected(int argc, char** argv)
 
 	return 0;
 }
+
+UINT32 Data_view(int argc, char** argv)
+{
+	if (argc != 6){
+		printf("ex)dviu in-filename  size_h  size_w offset out-file  \n");
+		//                   1         2        3     4       5        
+		return -1;
+	}
+
+	int h = atoi(argv[2]);
+	int w = atoi(argv[3]);
+	int offset = atoi(argv[4]);
+
+	data_view_rapper(argv[1], h, w,offset,argv[5]);
+
+	return 0;
+}
+
+
+

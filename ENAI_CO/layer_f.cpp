@@ -110,19 +110,18 @@ void ReLU_float(float *input_data, int input_height, int input_width, int input_
 	}
 }
 
-void new_max_pool_float(float *input_data, int input_height, int input_weight, int input_ch, float *result, int kernel_height, int kernel_weight, int stride){
-	int output_height = (input_height - kernel_height) / stride + 1;
-	int output_weight = (input_weight - kernel_weight) / stride + 1;
+void new_max_pool_float(float *input_data, int input_height, int input_width,int input_ch, float *result, int kernel_height, int kernel_width, int stride){
+
 	int q, i, j, w, h, s = 0;
-	float Max_value = input_data[0];
+	float Max_value = 0;
 
 	for (q = 0; q < input_ch; q++){
-		for (i = 0; i < input_height - 2; i += stride){
-			for (j = 0; j < input_weight - 2; j += stride){
-				Max_value = input_data[input_height*input_weight*q + input_weight*i + j];
+		for (i = 0; i < input_height - (kernel_height-1); i += stride){
+			for (j = 0; j < input_width - (kernel_width-1); j += stride){
+				Max_value = input_data[input_height*input_width*q + input_width*i + j];
 				for (h = 0; h < kernel_height; h++){
-					for (w = 0; w < kernel_weight; w++){
-						float buf1 = input_data[input_weight*(i + h + input_height*q) + j + w];
+					for (w = 0; w < kernel_width; w++){
+						float buf1 = input_data[input_width*(i + h + input_height*q) + j + w];
 						Max_value = (Max_value > buf1) ? Max_value : buf1;
 					}
 				}

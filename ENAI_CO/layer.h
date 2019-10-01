@@ -35,6 +35,6 @@ extern void bias_rapper(char *input_file, int input_height, int input_width, int
 extern void fully_connected_rapper(char *input_file, int input_ch, char *kernel_file, int kernel_ch, char *output_file);
 extern void scale_only_rapper(char *input_file, int input_height, int input_width, int input_ch, int scale, char *output_file);
 
-
+extern void data_view_rapper(char* inputfile, int size_h, int size_w, int offset, char* outfile);
 
 #endif  //LAYER

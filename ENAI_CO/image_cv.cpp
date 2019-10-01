@@ -167,3 +167,19 @@ UINT32 dataResize(int argc, char** argv){
 	destroyAllWindows();
 	return 0;
 }
+
+
+UINT32 dataView(BYTE* data, int h, int w){
+
+	Mat image(h, w, CV_8UC1);
+
+	image.data = data;
+
+	namedWindow("Display window", WINDOW_AUTOSIZE); // Create a window for display.
+	imshow("Display window", image);                // Show our image inside it.
+	waitKey(0); // Wait for a keystroke in the window
+	destroyAllWindows();
+
+
+	return 0;
+}

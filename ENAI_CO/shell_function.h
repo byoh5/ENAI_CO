@@ -68,6 +68,8 @@ extern UINT32 Bias(int argc, char** argv);
 extern UINT32 Scale_only(int argc, char** argv);
 extern UINT32 Fully_connected(int argc, char** argv);
 
+extern UINT32 Data_view(int argc, char** argv);
+
 
 //Float Function
 extern UINT32 Convolution_float(int argc, char** argv);

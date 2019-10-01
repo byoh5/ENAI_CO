@@ -3,6 +3,7 @@
 #include "shell.h"
 #include <iostream>
 #include "fixedpoint.h"
+#include "image_cv.h"
 
 #pragma comment (lib, "Ws2_32.lib")
 #pragma warning(disable:4996)
@@ -126,14 +127,13 @@ void ReLU_int(int *input_data, int input_height, int input_width, int input_ch){
 }
 
 void new_max_pool_int(int *input_data, int input_height, int input_weight, int input_ch, int *result, int kernel_height, int kernel_weight, int stride){
-	int output_height = (input_height - kernel_height) / stride + 1;
-	int output_weight = (input_weight - kernel_weight) / stride + 1;
+	
 	int q, i, j, w, h, s = 0;
 	int Max_value = input_data[0];
 
 	for (q = 0; q < input_ch; q++){
-		for (i = 0; i < input_height - 2; i += stride){
-			for (j = 0; j < input_weight - 2; j += stride){
+		for (i = 0; i < input_height - (kernel_height - 1); i += stride){
+			for (j = 0; j < input_weight - (kernel_weight - 1); j += stride){
 				Max_value = input_data[input_height*input_weight*q + input_weight*i + j];
 				for (h = 0; h < kernel_height; h++){
 					for (w = 0; w < kernel_weight; w++){
@@ -993,4 +993,42 @@ void fully_connected_rapper(char *input_file, int input_ch, char *kernel_file, i
 	if (kernel_data)	free(kernel_data);
 	if (output_data)	free(output_data);
 
+}
+
+
+void data_view_rapper(char* inputfile, int size_h, int size_w,int offset, char* outfile){
+
+	BYTE* input_data = (BYTE*)malloc(sizeof(BYTE)*(size_h*size_w));
+	if (input_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+	
+	FILE *frp = NULL;
+	frp = fopen(inputfile, "rb");
+	int num = fread(input_data, sizeof(BYTE), 16, frp); // for header
+	num = fread(input_data, sizeof(BYTE), (size_h*size_h), frp);
+	for (int i = 0; i < offset; i++){
+		num = fread(input_data, sizeof(BYTE), (size_h*size_h), frp);
+	}
+
+	BYTE* pOutput_data = input_data;
+	FILE *fp = NULL;
+	fp = fopen(outfile, "w");
+	if (fp != NULL){
+		for (int i = 0; i < (size_h*size_h); i++){
+			//	printf("%d\n", output_data[i]);
+			fprintf(fp, "%d\n", *pOutput_data) ;
+			pOutput_data++;
+		}
+		fclose(fp);
+	}
+	else{
+		printf("fopen fail!\n");
+	}
+
+	dataView((BYTE*)input_data, size_h, size_w);
+
+	if (input_data)		free(input_data);
+	
 }

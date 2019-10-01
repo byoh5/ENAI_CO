@@ -1,4 +1,4 @@
-﻿빌드 시작: 2019-09-26 오전 9:07:25
+﻿빌드 시작: 2019-10-01 오후 2:59:14
      1>2 노드의 "D:\EYENIX\DEV\DL\src\ENAI_CO\ENAI_CO\ENAI_CO\ENAI_CO.vcxproj" 프로젝트(Rebuild 대상)입니다.
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ID:\EYENIX\DEV\DL\src\ENAI_CO\ENAI_CO\opencv\build\include /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"Release\ENAI_CO.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp
@@ -40,21 +40,21 @@
      1>D:\EYENIX\DEV\DL\src\ENAI_CO\ENAI_CO\opencv\build\include\opencv2/core/persistence.hpp : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
      1>D:\EYENIX\DEV\DL\src\ENAI_CO\ENAI_CO\opencv\build\include\opencv2/core/utility.hpp : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
          layer.cpp
-     1>layer.cpp(94): warning C4101: 'j' :참조되지 않은 지역 변수입니다.
+     1>layer.cpp(95): warning C4101: 'j' :참조되지 않은 지역 변수입니다.
          layer_f.cpp
      1>layer_f.cpp(79): warning C4101: 'j' :참조되지 않은 지역 변수입니다.
-     1>layer_f.cpp(320): warning C4244: '초기화 중' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-     1>layer_f.cpp(290): warning C4101: 'input_buf' :참조되지 않은 지역 변수입니다.
+     1>layer_f.cpp(319): warning C4244: '초기화 중' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+     1>layer_f.cpp(289): warning C4101: 'input_buf' :참조되지 않은 지역 변수입니다.
+     1>layer_f.cpp(1117): warning C4244: '=' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
      1>layer_f.cpp(1118): warning C4244: '=' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-     1>layer_f.cpp(1119): warning C4244: '=' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
          shell.cpp
          shell_function.cpp
-     1>shell_function.cpp(567): warning C4244: '초기화 중' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-     1>shell_function.cpp(582): warning C4244: '초기화 중' : 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-     1>shell_function.cpp(584): warning C4244: '=' : 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-     1>shell_function.cpp(597): warning C4244: '초기화 중' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-     1>shell_function.cpp(598): warning C4244: '초기화 중' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-     1>shell_function.cpp(671): warning C4244: '초기화 중' : 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+     1>shell_function.cpp(569): warning C4244: '초기화 중' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+     1>shell_function.cpp(584): warning C4244: '초기화 중' : 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+     1>shell_function.cpp(586): warning C4244: '=' : 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+     1>shell_function.cpp(599): warning C4244: '초기화 중' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+     1>shell_function.cpp(600): warning C4244: '초기화 중' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+     1>shell_function.cpp(673): warning C4244: '초기화 중' : 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
          shell_function_float.cpp
      1>shell_function_float.cpp(242): warning C4244: '초기화 중' : 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
          squeezeNet.cpp
@@ -79,4 +79,4 @@
 
 빌드했습니다.
 
-경과 시간: 00:00:04.63
+경과 시간: 00:00:04.87
