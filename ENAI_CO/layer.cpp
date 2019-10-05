@@ -4,6 +4,7 @@
 #include <iostream>
 #include "fixedpoint.h"
 #include "image_cv.h"
+#include "mnist_int.h"
 
 #pragma comment (lib, "Ws2_32.lib")
 #pragma warning(disable:4996)
@@ -595,6 +596,22 @@ void global_average_pooling_rapper(char* input_file, int input_height, int input
 
 }
 
+int max_val_int(int* input_data ,int input)
+{
+	int max = 0;
+	int maxidx = 0;
+
+	for (int i = 0; i<input; i++){
+		if (*(input_data + i) > max){
+			max = *(input_data + i);
+			maxidx = i;
+		}
+	}
+
+	return maxidx;
+}
+
+
 void max_val(char* input_file, int input)
 {
 	int* input_data = (int*)malloc(sizeof(int)*(input));
@@ -939,6 +956,17 @@ void scale_only_rapper(char *input_file, int input_height, int input_width, int 
 
 }
 
+void fully_connected(int *input_data, int input_ch, int *kernel_data, int kernel_ch, int *output_data){
+	int i = 0, k = 0;
+	for (i = 0; i < kernel_ch; i++){
+		for (k = 0; k < input_ch; k++){
+
+				*(output_data + i) += *(input_data + k) * *(kernel_data + (i*input_ch) + k);
+			//*(output_data + i) += mul_fix(*(input_data + k), *(kernel_data + (i*input_ch) + k), FRICTIONBIT);
+		}
+	}
+}
+
 void fully_connected_rapper(char *input_file, int input_ch, char *kernel_file, int kernel_ch, char *output_file){
 
 
@@ -996,7 +1024,7 @@ void fully_connected_rapper(char *input_file, int input_ch, char *kernel_file, i
 }
 
 
-void data_view_rapper(char* inputfile, int size_h, int size_w,int offset, char* outfile){
+void data_view_rapper(char* inputfile,int size_h, int size_w,int offset, char* outfile){
 
 	BYTE* input_data = (BYTE*)malloc(sizeof(BYTE)*(size_h*size_w));
 	if (input_data == NULL) {
@@ -1031,4 +1059,69 @@ void data_view_rapper(char* inputfile, int size_h, int size_w,int offset, char* 
 
 	if (input_data)		free(input_data);
 	
+}
+
+void mnist_rapper(char* inputfile,char* idxfile){
+	int size_h = 28;
+	int size_w = 28;
+
+	Mnist_mem_init();
+	Mnist_inout_mem_init();
+	Mnist_inout_mem_clear();
+
+
+	BYTE* input_data = (BYTE*)malloc(sizeof(BYTE)*(size_h*size_w));
+	if (input_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+
+	int* input_data_int = (int*)malloc(sizeof(int)*(size_h*size_w));
+	if (input_data == NULL) {
+		printf("malloc fail\n");
+		return;
+	}
+
+
+	FILE *frp = NULL;
+	frp = fopen(inputfile, "rb");
+	 fread(input_data, sizeof(BYTE), 16, frp); // for header
+	 
+	FILE *fidx = NULL;
+	fidx = fopen(idxfile, "rb");
+	BYTE hdr[16], idx;
+	 fread(hdr, sizeof(BYTE), 8, fidx); // for header
+	
+
+	int correct = 0;
+	int miss = 0;
+	int ai_ret = 0;
+	while (!feof(frp)){
+		fread(&idx, sizeof(BYTE), 1, fidx);
+		fread(input_data, sizeof(BYTE), (size_h*size_h), frp);
+
+		for (int i = 0; i < size_h*size_w; i++){
+			*(input_data_int + i) = (int)*(input_data + i);
+		}
+
+		ai_ret = Mnist_int(input_data_int);
+
+//		dataView((BYTE*)input_data, size_h, size_w);
+		
+		if (ai_ret == idx){
+			correct++;
+		}
+		else{
+			miss++;
+		}
+		printf("[%d]Accuracy : %f\n", correct + miss, ((float)correct / (float)(correct + miss)));
+//		printf("Num :%d\n", ai_ret);
+	
+	}
+
+	printf("Correct %d miss %d\n", correct, miss);
+	printf("Accuracy : %f\n", ((float)correct / (float)(correct + miss)));
+
+	if (input_data)		free(input_data);
+
 }

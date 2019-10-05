@@ -8,12 +8,13 @@ d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\debug\enai_co.obj
 d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\debug\fixedpoint.obj
 d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\debug\float2int_conv.obj
 d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\debug\image_cv.obj
-d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\debug\layer.obj
 d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\debug\layer_f.obj
 d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\debug\shell.obj
 d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\debug\shell_function.obj
 d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\debug\shell_function_float.obj
 d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\debug\squeezenet.obj
+d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\debug\layer.obj
+d:\eyenix\dev\dl\src\enai_co\enai_co\enai_co\debug\mnist_int.obj
 d:\eyenix\dev\dl\src\enai_co\enai_co\debug\enai_co.ilk
 d:\eyenix\dev\dl\src\enai_co\enai_co\debug\enai_co.exe
 d:\eyenix\dev\dl\src\enai_co\enai_co\debug\enai_co.pdb

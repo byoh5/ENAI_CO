@@ -78,7 +78,7 @@ tMonCmd gCmdList[] =
 	{ (char*) "scon", Scale_only, sInt },
 
 	{ (char*) "dviu", Data_view, sInt },
-
+	{ (char*) "mnist", MNIST_run, sInt },
 
 	{ (char*) "conv_f", Convolution_float, sFloat },
 	{ (char*) "dwcv_f", DepthwiseConvolution_float, sFloat },
@@ -699,7 +699,7 @@ UINT32 Data_view(int argc, char** argv)
 {
 	if (argc != 6){
 		printf("ex)dviu in-filename  size_h  size_w offset out-file  \n");
-		//                   1         2        3     4       5        
+		//                   1         2        3     4       5               
 		return -1;
 	}
 
@@ -713,4 +713,14 @@ UINT32 Data_view(int argc, char** argv)
 }
 
 
+UINT32 MNIST_run(int argc, char** argv)
+{
+	if (argc != 3){
+		printf("ex)mnist in-filename  idx-file \n");
+		//                   1         2                    
+		return -1;
+	}
+	mnist_rapper(argv[1],argv[2]);
 
+	return 0;
+}

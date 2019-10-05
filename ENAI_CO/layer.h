@@ -31,10 +31,15 @@ extern void depthwise_convolution_int_rapper(char *input_file, int input_height,
 	char *output_file, int output_height, int output_width, int stride, int padding);
 extern void batch_normalize_rapper(char *input_file, int input_height, int input_width, int input_ch, char *kernel_1_file, char *kernel_2_file, char *kernel_3_file, char *output_file);
 extern void scale_bias_rapper(char *input_file, int input_height, int input_width, int input_ch, char *kernel_1_file, char *kernel_2_file, char *output_file);
+extern int max_val_int(int* input_data, int input);
+extern void fully_connected(int *input_data, int input_ch, int *kernel_data, int kernel_ch, int *output_data);
+extern void bias(int *input_data, int input_height, int input_width, int input_ch, int *kernel_data_1, int *output_data);
 extern void bias_rapper(char *input_file, int input_height, int input_width, int input_ch, char *kernel_1_file, char *output_file);
 extern void fully_connected_rapper(char *input_file, int input_ch, char *kernel_file, int kernel_ch, char *output_file);
 extern void scale_only_rapper(char *input_file, int input_height, int input_width, int input_ch, int scale, char *output_file);
 
 extern void data_view_rapper(char* inputfile, int size_h, int size_w, int offset, char* outfile);
+
+extern void mnist_rapper(char* inputfile, char* idxfile);
 
 #endif  //LAYER
