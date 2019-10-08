@@ -1104,18 +1104,25 @@ void mnist_rapper(char* inputfile,char* idxfile){
 			*(input_data_int + i) = (int)*(input_data + i);
 		}
 
-		ai_ret = Mnist_int(input_data_int);
+		ai_ret = Mnist_int_opt(input_data_int);
 
-//		dataView((BYTE*)input_data, size_h, size_w);
+		
 		
 		if (ai_ret == idx){
 			correct++;
+			printf("O");
 		}
 		else{
 			miss++;
+			printf("X: AI:%d - real:%d", ai_ret, idx);
+		//	dataView((BYTE*)input_data, size_h, size_w);
 		}
+
+		
 		printf("[%d]Accuracy : %f\n", correct + miss, ((float)correct / (float)(correct + miss)));
 //		printf("Num :%d\n", ai_ret);
+
+		
 	
 	}
 

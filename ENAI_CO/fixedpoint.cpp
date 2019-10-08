@@ -8,7 +8,7 @@
 
 int float_to_fixed(float input,int fractionbit)
 {
-	return round(input * (1 << fractionbit));
+	return floor(input * (1 << fractionbit));
 }
 
 float fixed_to_float(int input, int fractionbit)

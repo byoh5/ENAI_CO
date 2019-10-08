@@ -7,4 +7,5 @@ fx2f inout/ip1_1_out.txt     fix2float/ip1_1_out.txt        13
 fx2f inout/ip2_0_out.txt     fix2float/ip2_0_out.txt        13     
 fx2f inout/ip2_1_out.txt     fix2float/ip2_1_out.txt        13     
 fx2f inout/maxp1_out.txt     fix2float/maxp1_out.txt        13    
-fx2f inout/maxp2_out.txt     fix2float/maxp2_out.txt        13 
+fx2f inout/maxp2_out.txt     fix2float/maxp2_out.txt        13   
+fx2f inout/relu3_out.txt     fix2float/relu3_out.txt        13

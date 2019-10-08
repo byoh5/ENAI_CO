@@ -1,0 +1,15 @@
+resize image/0.jpg						28 28 image/1.txt 1
+scon_f image/1.txt					  28 28  1 0.00390625 inout/scon0_out.txt
+conv_f inout/scon0_out.txt 		28 28  1 float/conv1_0.txt 5 5 20 inout/conv1_out.txt 24 24 1 0
+bias_f inout/conv1_out.txt 		24 24 20 float/conv1_1.txt inout/bias1_out.txt
+maxp_f inout/bias1_out.txt 		24 24 20 inout/maxp1_out.txt 2 2 2
+conv_f inout/maxp1_out.txt 		12 12 20 float/conv2_0.txt 5 5 50 inout/conv2_out.txt  8  8 1 0
+bias_f inout/conv2_out.txt 		 8  8 50 float/conv2_1.txt inout/bias2_out.txt
+maxp_f inout/bias2_out.txt 		 8  8 50 inout/maxp2_out.txt 2 2 2
+fulc_f inout/maxp2_out.txt 				 800 float/ip1_0.txt 500 inout/ip1_0_out.txt
+bias_f inout/ip1_0_out.txt 		 1 1 500 float/ip1_1.txt 		 inout/ip1_1_out.txt
+relu_f inout/ip1_1_out.txt 		 1 1 500 inout/relu3_out.txt
+fulc_f inout/relu3_out.txt 				 500 float/ip2_0.txt  10 inout/ip2_0_out.txt
+bias_f inout/ip2_0_out.txt 		 1 1  10 float/ip2_1.txt 		 inout/ip2_1_out.txt
+maxv_f inout/ip2_1_out.txt 		10
+
